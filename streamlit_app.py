@@ -19,6 +19,15 @@ if not os.path.exists(UPLOAD_DIR):
     os.makedirs(UPLOAD_DIR)
 
 # Helper functions
+def get_logo_path():
+    for ext in ["png", "jpg", "jpeg", "svg", "webp"]:
+        possible_path = os.path.join("assets", f"logo.{ext}")
+        if os.path.exists(possible_path):
+            return possible_path
+    return None
+
+logo_path = get_logo_path()
+
 def save_file(uploaded_file):
     if uploaded_file is not None:
         file_path = os.path.join(UPLOAD_DIR, uploaded_file.name)
@@ -43,7 +52,11 @@ def get_files():
 
 # Sidebar for navigation
 with st.sidebar:
-    st.image("https://via.placeholder.com/150x50?text=QuXAT", use_container_width=True) # Placeholder for logo
+    if logo_path:
+        st.image(logo_path, use_container_width=True)
+    else:
+        st.image("https://via.placeholder.com/150x50?text=QuXAT", use_container_width=True) # Placeholder for logo
+        
     page = st.selectbox("Navigation", ["Document Search", "Admin Upload"])
     st.markdown("---")
     st.markdown("### About QuXAT")
@@ -59,7 +72,14 @@ st.subheader("Organizational Quality & Safety Documentation Repository")
 st.markdown("---")
 
 if page == "Document Search":
-    st.header("Search Documents")
+    if logo_path:
+        col1, col2 = st.columns([1, 6])
+        with col1:
+            st.image(logo_path, width=80)
+        with col2:
+            st.header("Search Documents")
+    else:
+        st.header("Search Documents")
     
     # Search bar
     search_query = st.text_input("Search documents by name...")
@@ -133,7 +153,14 @@ if page == "Document Search":
         st.info("No documents uploaded yet.")
 
 elif page == "Admin Upload":
-    st.header("Admin Upload")
+    if logo_path:
+        col1, col2 = st.columns([1, 6])
+        with col1:
+            st.image(logo_path, width=80)
+        with col2:
+            st.header("Admin Upload")
+    else:
+        st.header("Admin Upload")
     
     # Password protection (simple)
     password = st.text_input("Enter Admin Password", type="password")
