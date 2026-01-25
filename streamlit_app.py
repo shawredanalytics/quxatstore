@@ -64,6 +64,7 @@ with st.sidebar:
         "The QuXAT Score is a simple, credible indicator of compliance with essential quality and safety practices. "
         "It enables organizations to self-assess and benchmark on quality & safety maturity, identify gaps, and track progress over time."
     )
+    st.link_button("Visit QuXAT Website", "https://www.quxat.com")
     st.markdown("© 2025 QuXAT - All Rights Reserved.")
 
 # Title
