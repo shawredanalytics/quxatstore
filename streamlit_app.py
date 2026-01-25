@@ -66,7 +66,9 @@ if page == "Document Search":
         
         if not df.empty:
             # Display files
-            st.dataframe(df, use_container_width=True)
+            df_display = df.reset_index(drop=True)
+            df_display.index = df_display.index + 1
+            st.dataframe(df_display, use_container_width=True)
             
             # View & Download section
             st.subheader("View & Download")
