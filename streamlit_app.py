@@ -69,8 +69,9 @@ with st.sidebar:
     st.markdown("© 2025 QuXAT - All Rights Reserved.")
 
 # Title
-st.title("QuXAT Store")
-st.subheader("Organizational Quality & Safety Documentation Repository")
+st.title("QuXAT Healthcare Document Store")
+st.subheader("Repository for Healthcare Quality & Compliance Documentation")
+st.markdown("Access essential resources for NABL, NABH, ISO, and other healthcare accreditation standards.")
 st.markdown("---")
 
 if page == "Document Search":
@@ -79,12 +80,12 @@ if page == "Document Search":
         with col1:
             st.image(logo_path, width=80)
         with col2:
-            st.header("Search Documents")
+            st.header("Search Healthcare Documents")
     else:
-        st.header("Search Documents")
+        st.header("Search Healthcare Documents")
     
     # Search bar
-    search_query = st.text_input("Search documents by name...")
+    search_query = st.text_input("Search for SOPs, manuals, and compliance forms...")
     
     # Get files
     files = get_files()
