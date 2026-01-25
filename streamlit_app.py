@@ -4,6 +4,7 @@ import shutil
 import base64
 from datetime import datetime
 import pandas as pd
+from streamlit_pdf_viewer import pdf_viewer
 
 # Page config
 st.set_page_config(
@@ -93,9 +94,8 @@ if page == "Document Search":
                 try:
                     if file_extension == ".pdf":
                         with open(file_path, "rb") as f:
-                            base64_pdf = base64.b64encode(f.read()).decode('utf-8')
-                        pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="100%" height="800" type="application/pdf"></iframe>'
-                        st.markdown(pdf_display, unsafe_allow_html=True)
+                            pdf_data = f.read()
+                        pdf_viewer(input=pdf_data, width=700)
                     
                     elif file_extension in [".png", ".jpg", ".jpeg"]:
                         st.image(file_path)

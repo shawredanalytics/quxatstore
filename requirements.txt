@@ -2,3 +2,4 @@ streamlit
 pandas
 watchdog
 openpyxl
+streamlit-pdf-viewer
