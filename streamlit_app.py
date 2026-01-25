@@ -61,8 +61,9 @@ with st.sidebar:
     st.markdown("---")
     st.markdown("### About QuXAT")
     st.info(
-        "QuXAT Document Repository is a secure, centralized digital platform designed to help healthcare organizations efficiently store, manage, track, and retrieve critical quality and compliance documents. "
-        "Built to support accreditation and regulatory requirements (such as NABL, NABH, ISO, and other healthcare standards), QuXAT ensures structured documentation, version control, and audit readiness at all times."
+        "QuXAT Document Repository is a secure, centralized digital platform designed to help healthcare organizations efficiently access quality, safety and related compliance documents. "
+        "The portal helps healthcare organizations to prepared accreditation and regulatory requirements (such as NABL, NABH, ISO, and other healthcare standards), QuXAT ensures easy access to basic structured documentation with version control. "
+        "Organizations can download resources and modify them as per their internal requirements."
     )
     st.link_button("Visit QuXAT Website", "https://www.quxat.com")
     st.markdown("© 2025 QuXAT - All Rights Reserved.")
