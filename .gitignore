@@ -1,1 +1,30 @@
-node_modules
+# Streamlit
+.streamlit/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Uploads
+uploads/
+!uploads/.gitkeep
+
+# Next.js App
+nextjs_app/.next/
+nextjs_app/node_modules/
+nextjs_app/out/
+nextjs_app/build/
+nextjs_app/.DS_Store
+nextjs_app/*.pem
+nextjs_app/npm-debug.log*
+nextjs_app/yarn-debug.log*
+nextjs_app/yarn-error.log*
+nextjs_app/.pnpm-debug.log*
+nextjs_app/.env*
+nextjs_app/.vercel
+nextjs_app/*.tsbuildinfo
+nextjs_app/next-env.d.ts
+nextjs_app/src/generated
+nextjs_app/*.db
+nextjs_app/*.db-journal
+nextjs_app/public/uploads/*
+!nextjs_app/public/uploads/.gitkeep
