@@ -178,14 +178,25 @@ elif page == "Admin Upload":
                     st.error("Failed to upload file.")
                     
         # File Management
-        st.subheader("Manage Files")
+        st.markdown("---")
+        st.subheader("Current Repository Content")
         files = get_files()
+        
         if files:
+            # Display list of files
+            df = pd.DataFrame(files)
+            df_display = df.reset_index(drop=True)
+            df_display.index = df_display.index + 1
+            st.dataframe(df_display, use_container_width=True)
+            
+            st.markdown("### Delete Files")
             file_to_delete = st.selectbox("Select file to delete", [f['Filename'] for f in files])
             if st.button("Delete File"):
                 os.remove(os.path.join(UPLOAD_DIR, file_to_delete))
                 st.success(f"File '{file_to_delete}' deleted!")
                 st.rerun()
+        else:
+            st.info("No documents uploaded yet.")
     else:
         if password:
             st.error("Incorrect password")
