@@ -61,8 +61,8 @@ with st.sidebar:
     st.markdown("---")
     st.markdown("### About QuXAT")
     st.info(
-        "The QuXAT Score is a simple, credible indicator of compliance with essential quality and safety practices. "
-        "It enables organizations to self-assess and benchmark on quality & safety maturity, identify gaps, and track progress over time."
+        "QuXAT Document Repository is a secure, centralized digital platform designed to help healthcare organizations efficiently store, manage, track, and retrieve critical quality and compliance documents. "
+        "Built to support accreditation and regulatory requirements (such as NABL, NABH, ISO, and other healthcare standards), QuXAT ensures structured documentation, version control, and audit readiness at all times."
     )
     st.link_button("Visit QuXAT Website", "https://www.quxat.com")
     st.markdown("© 2025 QuXAT - All Rights Reserved.")
