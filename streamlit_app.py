@@ -42,11 +42,21 @@ def get_files():
     return files
 
 # Sidebar for navigation
-page = st.sidebar.selectbox("Navigation", ["Document Search", "Admin Upload"])
+with st.sidebar:
+    st.image("https://via.placeholder.com/150x50?text=QuXAT", use_container_width=True) # Placeholder for logo
+    page = st.selectbox("Navigation", ["Document Search", "Admin Upload"])
+    st.markdown("---")
+    st.markdown("### About QuXAT")
+    st.info(
+        "The QuXAT Score is a simple, credible indicator of compliance with essential quality and safety practices. "
+        "It enables organizations to self-assess and benchmark on quality & safety maturity, identify gaps, and track progress over time."
+    )
+    st.markdown("© 2025 QuXAT - All Rights Reserved.")
 
 # Title
-st.title("📚 QuXAT Store")
-st.markdown("Quality Systems Documentation Repository")
+st.title("QuXAT Store")
+st.subheader("Organizational Quality & Safety Documentation Repository")
+st.markdown("---")
 
 if page == "Document Search":
     st.header("Search Documents")
