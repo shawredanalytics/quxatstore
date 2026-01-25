@@ -1,6 +1,7 @@
 import streamlit as st
 import os
 import shutil
+import base64
 from datetime import datetime
 import pandas as pd
 
@@ -66,19 +67,54 @@ if page == "Document Search":
             # Display files
             st.dataframe(df, use_container_width=True)
             
-            # Download section
-            st.subheader("Download Files")
-            selected_file = st.selectbox("Select a file to download", df['Filename'])
+            # View & Download section
+            st.subheader("View & Download")
+            selected_file = st.selectbox("Select a file to view/download", df['Filename'])
             
             if selected_file:
                 file_path = os.path.join(UPLOAD_DIR, selected_file)
+                
+                # Download Button
                 with open(file_path, "rb") as f:
+                    file_data = f.read()
                     st.download_button(
                         label=f"Download {selected_file}",
-                        data=f,
+                        data=file_data,
                         file_name=selected_file,
                         mime="application/octet-stream"
                     )
+                
+                # Preview Logic
+                st.markdown("---")
+                st.subheader("Document Preview")
+                
+                file_extension = os.path.splitext(selected_file)[1].lower()
+                
+                try:
+                    if file_extension == ".pdf":
+                        with open(file_path, "rb") as f:
+                            base64_pdf = base64.b64encode(f.read()).decode('utf-8')
+                        pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="100%" height="800" type="application/pdf"></iframe>'
+                        st.markdown(pdf_display, unsafe_allow_html=True)
+                    
+                    elif file_extension in [".png", ".jpg", ".jpeg"]:
+                        st.image(file_path)
+                        
+                    elif file_extension in [".csv"]:
+                        df_preview = pd.read_csv(file_path)
+                        st.dataframe(df_preview)
+                        
+                    elif file_extension in [".xlsx", ".xls"]:
+                        df_preview = pd.read_excel(file_path)
+                        st.dataframe(df_preview)
+                        
+                    elif file_extension in [".txt", ".md", ".py", ".json", ".js", ".html", ".css"]:
+                        with open(file_path, "r", encoding="utf-8") as f:
+                            st.text(f.read())
+                    else:
+                        st.info(f"Preview not available for {file_extension} files. Please download to view.")
+                except Exception as e:
+                    st.error(f"Error previewing file: {str(e)}")
         else:
             st.info("No documents found matching your search.")
     else:
