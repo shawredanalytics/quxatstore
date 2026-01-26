@@ -2,6 +2,7 @@ import streamlit as st
 import os
 import shutil
 import base64
+import urllib.parse
 from datetime import datetime
 import pandas as pd
 from streamlit_pdf_viewer import pdf_viewer
@@ -113,7 +114,9 @@ For any queries or support, please feel free to reach out.
 
 Warm regards,
 Team QuXAT"""
-    mailto_link = f"mailto:?subject={subject}&body={body}"
+    subject_encoded = urllib.parse.quote(subject)
+    body_encoded = urllib.parse.quote(body)
+    mailto_link = f"mailto:?subject={subject_encoded}&body={body_encoded}"
     st.link_button("Share via Email 📧", mailto_link)
     
     st.markdown("---")
