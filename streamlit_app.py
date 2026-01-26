@@ -88,7 +88,7 @@ with st.sidebar:
     # Share
     st.caption("Share QuXAT Store via Email")
     subject = "Check out QuXAT Healthcare Document Store"
-    body = "I found this great resource for healthcare compliance documents. Check it out!"
+    body = "QuXAT Document Repository is a secure, centralized digital platform designed to help healthcare organizations efficiently access quality, safety and related compliance documents. The portal helps healthcare organizations to prepare for accreditation and regulatory requirements (such as NABL, NABH, ISO, and other healthcare standards), QuXAT ensures easy access to basic structured documentation with version control. Organizations can download resources and modify them as per their internal requirements. - Obtain free access at - https://quxatstore.streamlit.app/"
     mailto_link = f"mailto:?subject={subject}&body={body}"
     st.link_button("Share via Email 📧", mailto_link)
     
