@@ -88,7 +88,31 @@ with st.sidebar:
     # Share
     st.caption("Share QuXAT Store via Email")
     subject = "QuXAT Healthcare Quality Systems Documentation Repository"
-    body = "QuXAT Document Repository is a secure, centralized digital platform designed to help healthcare organizations efficiently access quality, safety and related compliance documents. The portal helps healthcare organizations to prepare for accreditation and regulatory requirements (such as NABL, NABH, ISO, and other healthcare standards), QuXAT ensures easy access to basic structured documentation with version control. Organizations can download resources and modify them as per their internal requirements. - Obtain free access at - https://quxatstore.streamlit.app/"
+    body = """Dear Team,
+
+Greetings from QuXAT.
+
+We are pleased to introduce the QuXAT Document Repository, a secure and centralized digital platform designed to support healthcare organizations in efficiently accessing quality, safety, and compliance-related documentation.
+
+The repository is developed to assist organizations in preparing for accreditation and regulatory requirements, including NABL, NABH, ISO, and other recognized healthcare standards. QuXAT provides basic, structured documentation with version control, ensuring clarity, consistency, and ease of use.
+
+Key features of the QuXAT Document Repository:
+* Centralized access to quality and compliance documents
+* Structured formats aligned with healthcare accreditation standards
+* Version-controlled documents for better governance
+* Downloadable resources that can be customized as per internal organizational requirements
+
+Healthcare organizations can freely download the documents and modify them to suit their operational and compliance needs.
+
+Free Access:
+https://quxatstore.streamlit.app/
+
+We hope the QuXAT Document Repository will support your organization in strengthening quality systems and simplifying accreditation preparedness.
+
+For any queries or support, please feel free to reach out.
+
+Warm regards,
+Team QuXAT"""
     mailto_link = f"mailto:?subject={subject}&body={body}"
     st.link_button("Share via Email 📧", mailto_link)
     
