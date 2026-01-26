@@ -117,6 +117,22 @@ with st.sidebar:
 st.title("QuXAT Healthcare Document Store")
 st.subheader("Repository for Healthcare Quality & Compliance Documentation")
 st.markdown("Access essential resources for NABL, NABH, ISO, and other healthcare accreditation standards.")
+
+# WhatsApp Support Section (Below Hero)
+st.markdown("### 📞 QuXAT Store Support")
+whatsapp_url = "https://wa.me/916301237212"
+col_main_wa1, col_main_wa2 = st.columns([0.5, 8])
+with col_main_wa1:
+    st.markdown(
+        f'<a href="{whatsapp_url}" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="35" alt="WhatsApp"></a>',
+        unsafe_allow_html=True
+    )
+with col_main_wa2:
+    st.markdown(
+        f'<a href="{whatsapp_url}" target="_blank" style="text-decoration: none; color: inherit; font-size: 1.1em; line-height: 2;">Connect with us on WhatsApp: <strong>+91 6301237212</strong></a>', 
+        unsafe_allow_html=True
+    )
+
 st.markdown("---")
 
 if page == "Document Search":
