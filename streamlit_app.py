@@ -9,7 +9,7 @@ from streamlit_pdf_viewer import pdf_viewer
 
 # Page config
 st.set_page_config(
-    page_title="QuXAT Store",
+    page_title="QuXAT Healthcare Quality Systems Documents Repository",
     page_icon="📚",
     layout="wide"
 )
@@ -141,7 +141,7 @@ with st.sidebar:
     st.markdown("---")
     st.markdown("### About QuXAT")
     st.info(
-        "QuXAT Document Repository is a secure, centralized digital platform designed to help healthcare organizations efficiently access quality, safety and related compliance documents. "
+        "QuXAT Healthcare Quality Systems Documents Repository is a secure, centralized digital platform designed to help healthcare organizations efficiently access quality, safety and related compliance documents. "
         "The portal helps healthcare organizations to prepare for accreditation and regulatory requirements (such as NABL, NABH, ISO, and other healthcare standards), QuXAT ensures easy access to basic structured documentation with version control. "
         "Organizations can download resources and modify them as per their internal requirements."
     )
@@ -153,7 +153,7 @@ with st.sidebar:
     st.markdown("### Stay Connected")
     
     # Subscribe
-    st.caption("Subscribe for updates regarding QuXAT Store")
+    st.caption("Subscribe for updates regarding QuXAT Healthcare Quality Systems Documents Repository")
     email = st.text_input("Enter your email address")
     if st.button("Subscribe"):
         if email and "@" in email: # Basic validation
@@ -166,17 +166,17 @@ with st.sidebar:
             st.warning("Please enter a valid email address.")
             
     # Share
-    st.caption("Share QuXAT Store via Email")
+    st.caption("Share QuXAT Healthcare Quality Systems Documents Repository via Email")
     subject = "QuXAT Healthcare Quality Systems Documentation Repository"
     body = """Dear Team,
 
 Greetings from QuXAT.
 
-We are pleased to introduce the QuXAT Document Repository, a secure and centralized digital platform designed to support healthcare organizations in efficiently accessing quality, safety, and compliance-related documentation.
+We are pleased to introduce the QuXAT Healthcare Quality Systems Documents Repository, a secure and centralized digital platform designed to support healthcare organizations in efficiently accessing quality, safety, and compliance-related documentation.
 
 The repository is developed to assist organizations in preparing for accreditation and regulatory requirements, including NABL, NABH, ISO, and other recognized healthcare standards. QuXAT provides basic, structured documentation with version control, ensuring clarity, consistency, and ease of use.
 
-Key features of the QuXAT Document Repository:
+Key features of the QuXAT Healthcare Quality Systems Documents Repository:
 * Centralized access to quality and compliance documents
 * Structured formats aligned with healthcare accreditation standards
 * Version-controlled documents for better governance
@@ -187,7 +187,7 @@ Healthcare organizations can freely download the documents and modify them to su
 Free Access:
 https://quxatstore.streamlit.app/
 
-We hope the QuXAT Document Repository will support your organization in strengthening quality systems and simplifying accreditation preparedness.
+We hope the QuXAT Healthcare Quality Systems Documents Repository will support your organization in strengthening quality systems and simplifying accreditation preparedness.
 
 For any queries or support, please feel free to reach out.
 
@@ -201,7 +201,7 @@ Team QuXAT"""
     st.markdown("---")
     
     # Support
-    st.markdown("### QuXAT Store Support")
+    st.markdown("### QuXAT Healthcare Quality Systems Documents Repository Support")
     st.markdown("Need help? Connect with our support team!")
     
     whatsapp_url = "https://wa.me/916301237212"
@@ -228,13 +228,13 @@ if logo_path:
     col1, col2, col3 = st.columns([1, 1, 1])
     with col2:
         st.image(logo_path, width=350)
-st.title("QuXAT Healthcare Document Store")
+st.title("QuXAT Healthcare Quality Systems Documents Repository")
 st.markdown("<h2 style='text-align: center; color: #2e7d32;'>✅ Free Access for all Healthcare Professionals</h2>", unsafe_allow_html=True)
 st.subheader("Repository for Healthcare Quality & Compliance Documentation")
 st.markdown("<p style='text-align: center;'>Access essential resources for NABL, NABH, ISO, and other healthcare accreditation standards.</p>", unsafe_allow_html=True)
 
 # WhatsApp Support Section (Below Hero)
-st.markdown("### 📞 QuXAT Store Support")
+st.markdown("### 📞 QuXAT Healthcare Quality Systems Documents Repository Support")
 whatsapp_url = "https://wa.me/916301237212"
 st.markdown(
     f"""
