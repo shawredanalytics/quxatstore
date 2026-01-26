@@ -66,6 +66,51 @@ with st.sidebar:
         "Organizations can download resources and modify them as per their internal requirements."
     )
     st.link_button("Visit QuXAT Website", "https://www.quxat.com")
+    
+    st.markdown("---")
+    
+    # Stay Connected
+    st.markdown("### Stay Connected")
+    
+    # Subscribe
+    st.caption("Subscribe for updates regarding QuXAT Store")
+    email = st.text_input("Enter your email address")
+    if st.button("Subscribe"):
+        if email and "@" in email: # Basic validation
+            with open("subscribers.txt", "a") as f:
+                f.write(f"{email},{datetime.now()}\n")
+            st.success("Subscribed successfully!")
+        elif not email:
+            st.warning("Please enter an email address.")
+        else:
+            st.warning("Please enter a valid email address.")
+            
+    # Share
+    st.caption("Share QuXAT Store via Email")
+    subject = "Check out QuXAT Healthcare Document Store"
+    body = "I found this great resource for healthcare compliance documents. Check it out!"
+    mailto_link = f"mailto:?subject={subject}&body={body}"
+    st.link_button("Share via Email 📧", mailto_link)
+    
+    st.markdown("---")
+    
+    # Support
+    st.markdown("### QuXAT Store Support")
+    st.markdown("Need help? Connect with our support team!")
+    
+    whatsapp_url = "https://wa.me/916301237212"
+    
+    col_wa1, col_wa2 = st.columns([1, 3])
+    with col_wa1:
+        # WhatsApp Logo
+        st.markdown(
+            f'<a href="{whatsapp_url}" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="40" alt="WhatsApp"></a>',
+            unsafe_allow_html=True
+        )
+    with col_wa2:
+        st.markdown(f'<a href="{whatsapp_url}" target="_blank" style="text-decoration: none; color: inherit; font-weight: bold; line-height: 2.5;">+91 6301237212</a>', unsafe_allow_html=True)
+    
+    st.markdown("---")
     st.markdown("© 2025 QuXAT - All Rights Reserved.")
 
 # Title

@@ -7,6 +7,7 @@ __pycache__/
 # Uploads
 uploads/
 !uploads/.gitkeep
+subscribers.txt
 
 # Next.js App
 nextjs_app/.next/
@@ -28,3 +29,4 @@ nextjs_app/*.db
 nextjs_app/*.db-journal
 nextjs_app/public/uploads/*
 !nextjs_app/public/uploads/.gitkeep
+node_modules
