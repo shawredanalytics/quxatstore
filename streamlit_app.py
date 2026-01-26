@@ -14,14 +14,77 @@ st.set_page_config(
     layout="wide"
 )
 
-# CSS for better mobile responsiveness
+# CSS for better mobile responsiveness and aesthetics
 st.markdown("""
     <style>
+        /* Global Styles */
+        .stApp {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        /* Headers */
+        h1, h2, h3 {
+            color: #004d40; /* Teal 900 */
+            font-weight: 600;
+        }
+        
+        /* Buttons */
+        .stButton > button {
+            background-color: #00796b; /* Teal 700 */
+            color: white;
+            border-radius: 8px;
+            border: none;
+            padding: 0.5rem 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .stButton > button:hover {
+            background-color: #004d40;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            color: white;
+        }
+        
+        /* Sidebar */
+        [data-testid="stSidebar"] {
+            background-color: #e0f2f1; /* Teal 50 */
+            border-right: 1px solid #b2dfdb;
+        }
+        
+        /* Inputs */
+        .stTextInput > div > div > input {
+            border-radius: 8px;
+            border: 1px solid #b0bec5;
+        }
+        
+        /* Dataframes */
+        [data-testid="stDataFrame"] {
+            border: 1px solid #cfd8dc;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        /* Cards/Containers */
+        div.stInfo, div.stSuccess, div.stWarning, div.stError {
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: none;
+        }
+        
+        /* Custom Container for Search Results */
+        .search-result-card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 1rem;
+        }
+
         .block-container {
-            padding-top: 1rem;
-            padding-bottom: 1rem;
-            padding-left: 1rem;
-            padding-right: 1rem;
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+            padding-left: 2rem;
+            padding-right: 2rem;
         }
         [data-testid="stColumn"] {
             min-width: 0px !important;
