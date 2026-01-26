@@ -253,22 +253,17 @@ st.markdown(
 st.markdown("---")
 
 if page == "Document Search":
-    if logo_path:
-        col1, col2 = st.columns([1, 4])
-        with col1:
-            st.image(logo_path, width=80)
-        with col2:
-            st.header("Search Healthcare Documents")
-    else:
-        st.header("Search Healthcare Documents")
+    st.header("Search Healthcare Documents")
+    st.markdown("Find SOPs, manuals, checklists, and forms for accreditation.")
     
-    # Search bar
-    st.markdown("### 🔍 Document Search")
-    search_query = st.text_input(
-        "Enter keywords to find documents:",
-        placeholder="e.g., NABL SOP, Infection Control Manual, Fire Safety Form...",
-        help="Type document names or keywords to filter the list."
-    )
+    # Search bar container
+    with st.container():
+        # Search bar
+        search_query = st.text_input(
+            "🔍 Enter keywords to find documents:",
+            placeholder="e.g., NABL SOP, Infection Control Manual, Fire Safety Form...",
+            help="Type document names or keywords to filter the list."
+        )
     
     # Get files
     files = get_files()
