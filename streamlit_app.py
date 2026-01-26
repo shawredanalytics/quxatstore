@@ -19,7 +19,7 @@ st.markdown("""
     <style>
         /* Global Styles */
         .stApp {
-            background-color: #f8f9fa;
+            background-color: #ffffff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
@@ -27,6 +27,12 @@ st.markdown("""
         h1, h2, h3 {
             color: #004d40; /* Teal 900 */
             font-weight: 600;
+            text-align: center;
+        }
+        
+        /* Center text for better aesthetics */
+        .centered-text {
+            text-align: center;
         }
         
         /* Buttons */
@@ -225,14 +231,14 @@ if logo_path:
 st.title("QuXAT Healthcare Document Store")
 st.markdown("<h2 style='text-align: center; color: #2e7d32;'>✅ Free Access for all Healthcare Professionals</h2>", unsafe_allow_html=True)
 st.subheader("Repository for Healthcare Quality & Compliance Documentation")
-st.markdown("Access essential resources for NABL, NABH, ISO, and other healthcare accreditation standards.")
+st.markdown("<p style='text-align: center;'>Access essential resources for NABL, NABH, ISO, and other healthcare accreditation standards.</p>", unsafe_allow_html=True)
 
 # WhatsApp Support Section (Below Hero)
 st.markdown("### 📞 QuXAT Store Support")
 whatsapp_url = "https://wa.me/916301237212"
 st.markdown(
     f"""
-    <div style="display: flex; align-items: center; gap: 10px;">
+    <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
         <a href="{whatsapp_url}" target="_blank">
             <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="35" alt="WhatsApp">
         </a>
