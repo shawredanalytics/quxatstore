@@ -196,7 +196,12 @@ if page == "Document Search":
         st.header("Search Healthcare Documents")
     
     # Search bar
-    search_query = st.text_input("Search for SOPs, manuals, and compliance forms...")
+    st.markdown("### 🔍 Document Search")
+    search_query = st.text_input(
+        "Enter keywords to find documents:",
+        placeholder="e.g., NABL SOP, Infection Control Manual, Fire Safety Form...",
+        help="Type document names or keywords to filter the list."
+    )
     
     # Get files
     files = get_files()
