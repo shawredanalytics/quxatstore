@@ -160,6 +160,8 @@ Team QuXAT"""
     st.markdown("© 2025 QuXAT - All Rights Reserved.")
 
 # Title
+if logo_path:
+    st.image(logo_path, width=120)
 st.title("QuXAT Healthcare Document Store")
 st.subheader("Repository for Healthcare Quality & Compliance Documentation")
 st.markdown("Access essential resources for NABL, NABH, ISO, and other healthcare accreditation standards.")
