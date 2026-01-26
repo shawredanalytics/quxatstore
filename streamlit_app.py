@@ -68,11 +68,6 @@ def get_files():
 
 # Sidebar for navigation
 with st.sidebar:
-    if logo_path:
-        st.image(logo_path, use_container_width=True)
-    else:
-        st.image("https://via.placeholder.com/150x50?text=QuXAT", use_container_width=True) # Placeholder for logo
-        
     page = st.selectbox("Navigation", ["Document Search", "Admin Upload"])
     st.markdown("---")
     st.markdown("### About QuXAT")
@@ -161,7 +156,9 @@ Team QuXAT"""
 
 # Title
 if logo_path:
-    st.image(logo_path, width=120)
+    col1, col2, col3 = st.columns([1, 1, 1])
+    with col2:
+        st.image(logo_path, width=350)
 st.title("QuXAT Healthcare Document Store")
 st.caption("✅ Free Access for all Healthcare Professionals")
 st.subheader("Repository for Healthcare Quality & Compliance Documentation")
