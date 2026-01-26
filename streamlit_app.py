@@ -160,7 +160,7 @@ if logo_path:
     with col2:
         st.image(logo_path, width=350)
 st.title("QuXAT Healthcare Document Store")
-st.caption("✅ Free Access for all Healthcare Professionals")
+st.markdown("<h2 style='text-align: center; color: #2e7d32;'>✅ Free Access for all Healthcare Professionals</h2>", unsafe_allow_html=True)
 st.subheader("Repository for Healthcare Quality & Compliance Documentation")
 st.markdown("Access essential resources for NABL, NABH, ISO, and other healthcare accreditation standards.")
 
