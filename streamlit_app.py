@@ -253,7 +253,7 @@ st.markdown(
 st.markdown("---")
 
 if page == "Document Search":
-    st.header("Search Healthcare Documents")
+    st.header("Search Healthcare Quality Systems Documents")
     st.markdown("Find SOPs, manuals, checklists, and forms for accreditation.")
     
     # Search bar container
