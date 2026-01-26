@@ -14,6 +14,21 @@ st.set_page_config(
     layout="wide"
 )
 
+# CSS for better mobile responsiveness
+st.markdown("""
+    <style>
+        .block-container {
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+        [data-testid="stColumn"] {
+            min-width: 0px !important;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
 # Constants
 UPLOAD_DIR = "uploads"
 if not os.path.exists(UPLOAD_DIR):
@@ -127,15 +142,19 @@ Team QuXAT"""
     
     whatsapp_url = "https://wa.me/916301237212"
     
-    col_wa1, col_wa2 = st.columns([1, 3])
-    with col_wa1:
-        # WhatsApp Logo
-        st.markdown(
-            f'<a href="{whatsapp_url}" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="40" alt="WhatsApp"></a>',
-            unsafe_allow_html=True
-        )
-    with col_wa2:
-        st.markdown(f'<a href="{whatsapp_url}" target="_blank" style="text-decoration: none; color: inherit; font-weight: bold; line-height: 2.5;">+91 6301237212</a>', unsafe_allow_html=True)
+    st.markdown(
+        f"""
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <a href="{whatsapp_url}" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="40" alt="WhatsApp">
+            </a>
+            <a href="{whatsapp_url}" target="_blank" style="text-decoration: none; color: inherit; font-weight: bold;">
+                +91 6301237212
+            </a>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
     
     st.markdown("---")
     st.markdown("© 2025 QuXAT - All Rights Reserved.")
@@ -148,23 +167,25 @@ st.markdown("Access essential resources for NABL, NABH, ISO, and other healthcar
 # WhatsApp Support Section (Below Hero)
 st.markdown("### 📞 QuXAT Store Support")
 whatsapp_url = "https://wa.me/916301237212"
-col_main_wa1, col_main_wa2 = st.columns([0.5, 8])
-with col_main_wa1:
-    st.markdown(
-        f'<a href="{whatsapp_url}" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="35" alt="WhatsApp"></a>',
-        unsafe_allow_html=True
-    )
-with col_main_wa2:
-    st.markdown(
-        f'<a href="{whatsapp_url}" target="_blank" style="text-decoration: none; color: inherit; font-size: 1.1em; line-height: 2;">Connect with us on WhatsApp: <strong>+91 6301237212</strong></a>', 
-        unsafe_allow_html=True
-    )
+st.markdown(
+    f"""
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <a href="{whatsapp_url}" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="35" alt="WhatsApp">
+        </a>
+        <a href="{whatsapp_url}" target="_blank" style="text-decoration: none; color: inherit; font-size: 1.1em;">
+            Connect with us on WhatsApp: <strong>+91 6301237212</strong>
+        </a>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 st.markdown("---")
 
 if page == "Document Search":
     if logo_path:
-        col1, col2 = st.columns([1, 6])
+        col1, col2 = st.columns([1, 4])
         with col1:
             st.image(logo_path, width=80)
         with col2:
@@ -218,7 +239,7 @@ if page == "Document Search":
                     if file_extension == ".pdf":
                         with open(file_path, "rb") as f:
                             pdf_data = f.read()
-                        pdf_viewer(input=pdf_data, width=700)
+                        pdf_viewer(input=pdf_data)
                     
                     elif file_extension in [".png", ".jpg", ".jpeg"]:
                         st.image(file_path)
@@ -245,7 +266,7 @@ if page == "Document Search":
 
 elif page == "Admin Upload":
     if logo_path:
-        col1, col2 = st.columns([1, 6])
+        col1, col2 = st.columns([1, 4])
         with col1:
             st.image(logo_path, width=80)
         with col2:
