@@ -133,19 +133,57 @@ def load_drive_links():
                 return []
     return []
 
-def add_drive_link(name, doc_type, url, description):
-    links = load_drive_links()
-    links.append(
-        {
-            "Name": name,
-            "Type": doc_type,
-            "URL": url,
-            "Description": description,
-        }
-    )
+def save_drive_links(links):
     with open(DRIVE_LINKS_FILE, "w") as f:
         json.dump(links, f, indent=4)
     return DRIVE_LINKS_FILE
+
+def get_preview_link_html(file_path, file_name):
+    """Generates an HTML link to open the file in a new tab."""
+    try:
+        with open(file_path, "rb") as f:
+            data = f.read()
+        
+        b64_data = base64.b64encode(data).decode()
+        file_ext = os.path.splitext(file_name)[1].lower()
+        
+        mime_type = "application/octet-stream"
+        if file_ext == ".pdf":
+            mime_type = "application/pdf"
+        elif file_ext in [".png", ".jpg", ".jpeg"]:
+            mime_type = f"image/{file_ext[1:]}"
+        elif file_ext == ".txt":
+            mime_type = "text/plain"
+        elif file_ext == ".html":
+            mime_type = "text/html"
+        # For CSV/Excel, we render them as HTML tables for preview
+        elif file_ext in [".csv"]:
+             try:
+                 df = pd.read_csv(file_path)
+                 html = df.to_html(classes='table table-striped')
+                 full_html = f"<html><head><title>{file_name}</title><style>body{{font-family:sans-serif;padding:20px;}} table{{border-collapse:collapse;width:100%;}} th,td{{border:1px solid #ddd;padding:8px;}} tr:nth-child(even){{background-color:#f2f2f2;}} th{{padding-top:12px;padding-bottom:12px;text-align:left;background-color:#04AA6D;color:white;}}</style></head><body><h2>{file_name}</h2>{html}</body></html>"
+                 b64_data = base64.b64encode(full_html.encode('utf-8')).decode()
+                 mime_type = "text/html"
+             except:
+                 pass 
+        elif file_ext in [".xlsx", ".xls"]:
+             try:
+                 df = pd.read_excel(file_path)
+                 html = df.to_html(classes='table table-striped')
+                 full_html = f"<html><head><title>{file_name}</title><style>body{{font-family:sans-serif;padding:20px;}} table{{border-collapse:collapse;width:100%;}} th,td{{border:1px solid #ddd;padding:8px;}} tr:nth-child(even){{background-color:#f2f2f2;}} th{{padding-top:12px;padding-bottom:12px;text-align:left;background-color:#04AA6D;color:white;}}</style></head><body><h2>{file_name}</h2>{html}</body></html>"
+                 b64_data = base64.b64encode(full_html.encode('utf-8')).decode()
+                 mime_type = "text/html"
+             except:
+                 pass
+
+        href = f'data:{mime_type};base64,{b64_data}'
+        
+        # Style the link to look like a button
+        button_style = "display: inline-block; padding: 0.5em 1em; color: white; background-color: #00796b; border-radius: 8px; text-decoration: none; font-weight: 500; margin-top: 10px;"
+        return f'<a href="{href}" target="_blank" style="{button_style}">📄 Open Preview in New Window</a>'
+    except Exception as e:
+        return f"Error generating preview: {str(e)}"
+
 
 # Helper functions
 def get_logo_path():
@@ -165,16 +203,42 @@ def save_file(uploaded_file):
         return file_path
     return None
 
+def get_github_token():
+    """
+    Retrieve GitHub token from secrets or local file fallback.
+    """
+    if "GITHUB_TOKEN" in st.secrets:
+        return st.secrets["GITHUB_TOKEN"]
+    
+    # Fallback: Try to read .streamlit/secrets.toml relative to this script
+    try:
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        secrets_path = os.path.join(current_dir, ".streamlit", "secrets.toml")
+        if os.path.exists(secrets_path):
+            with open(secrets_path, "r") as f:
+                for line in f:
+                    if "GITHUB_TOKEN" in line:
+                        # Simple parsing for TOML line: KEY = "VALUE"
+                        parts = line.split("=", 1)
+                        if len(parts) == 2:
+                            token = parts[1].strip().strip('"').strip("'")
+                            if token:
+                                return token
+    except Exception as e:
+        print(f"Error reading secrets manually: {e}")
+    
+    return None
+
 def upload_to_github(file_path, file_name):
     """
     Uploads a file to the GitHub repository.
     Requires 'GITHUB_TOKEN' in st.secrets.
     """
     try:
-        if "GITHUB_TOKEN" not in st.secrets:
+        token = get_github_token()
+        if not token:
             return False, "GitHub token not found in secrets. Backup disabled."
 
-        token = st.secrets["GITHUB_TOKEN"]
         if token == "your_github_token_here":
             return False, "Please configure your actual GitHub token in .streamlit/secrets.toml"
             
@@ -208,6 +272,39 @@ def upload_to_github(file_path, file_name):
     except Exception as e:
         return False, f"GitHub upload failed: {str(e)}"
 
+def delete_from_github(file_name):
+    """
+    Deletes a file from the GitHub repository.
+    Requires 'GITHUB_TOKEN' in st.secrets.
+    """
+    try:
+        token = get_github_token()
+        if not token:
+            return False, "GitHub token not found in secrets. Deletion disabled."
+
+        if token == "your_github_token_here":
+            return False, "Please configure your actual GitHub token in .streamlit/secrets.toml"
+            
+        g = Github(token)
+        repo_name = "shawredanalytics/quxatstore" 
+        repo = g.get_repo(repo_name)
+        
+        # Path in the repo
+        repo_path = f"uploads/{file_name}"
+        
+        try:
+            contents = repo.get_contents(repo_path)
+            repo.delete_file(contents.path, f"Delete {file_name}", contents.sha)
+            return True, f"File deleted from GitHub repository: {repo_name}"
+        except GithubException as e:
+            if e.status == 404:
+                return True, "File not found in GitHub (already deleted?)"
+            else:
+                raise e
+                
+    except Exception as e:
+        return False, f"GitHub deletion failed: {str(e)}"
+
 @st.cache_resource
 def sync_from_github():
     """
@@ -215,11 +312,11 @@ def sync_from_github():
     Run once per session start.
     """
     try:
-        if "GITHUB_TOKEN" not in st.secrets:
+        token = get_github_token()
+        if not token:
             print("GitHub token not found in secrets. Sync disabled.")
             return
 
-        token = st.secrets["GITHUB_TOKEN"]
         if token == "your_github_token_here":
             print("Please configure your actual GitHub token in .streamlit/secrets.toml")
             return
@@ -262,7 +359,7 @@ def get_files():
     files = []
     if os.path.exists(UPLOAD_DIR):
         for filename in os.listdir(UPLOAD_DIR):
-            if filename not in [".gitkeep", "metadata.json", "drive_links.json"]:
+            if filename not in [".gitkeep", "metadata.json"]:
                 file_path = os.path.join(UPLOAD_DIR, filename)
                 stats = os.stat(file_path)
                 files.append(
@@ -403,16 +500,33 @@ if page == "Document Search":
             help="Type document names or keywords to filter the list.",
         )
     
-    files = get_files()
+    local_files = get_files()
     drive_links = load_drive_links()
     
-    all_types = set()
-    for f in files:
-        doc_type = f.get("Type")
-        if doc_type:
-            all_types.add(doc_type)
+    # Process Drive Links
+    drive_file_entries = []
     for link in drive_links:
-        doc_type = link.get("Type")
+        drive_file_entries.append({
+            "Filename": link.get("name", "Unknown"),
+            "Type": link.get("type", "General"),
+            "Size (KB)": "Link",
+            "Upload Date": link.get("added_on", "N/A"),
+            "Source": "Google Drive",
+            "URL": link.get("url", "#")
+        })
+        
+    # Process Local Files
+    local_file_entries = []
+    for f in local_files:
+        f["Source"] = "Local Repository"
+        f["URL"] = "" 
+        local_file_entries.append(f)
+        
+    all_files = local_file_entries + drive_file_entries
+    
+    all_types = set()
+    for f in all_files:
+        doc_type = f.get("Type")
         if doc_type:
             all_types.add(doc_type)
     
@@ -420,102 +534,68 @@ if page == "Document Search":
     if all_types:
         selected_types = st.multiselect("Filter by Document Type", sorted(list(all_types)))
     
-    if not files and not drive_links:
+    if not all_files:
         st.info("No documents available yet.")
     else:
-        if files:
-            df = pd.DataFrame(files)
-            
-            if selected_types:
-                df = df[df["Type"].isin(selected_types)]
-            
-            if search_query:
-                df = df[df["Filename"].str.contains(search_query, case=False)]
-            
-            if not df.empty:
-                df_display = df.reset_index(drop=True)
-                df_display.index = df_display.index + 1
-                st.dataframe(df_display, use_container_width=True)
-                
-                st.subheader("View & Download Local Documents")
-                selected_file = st.selectbox("Select a local file to view/download", df["Filename"])
-                
-                if selected_file:
-                    file_path = os.path.join(UPLOAD_DIR, selected_file)
-                    
-                    with open(file_path, "rb") as f:
-                        file_data = f.read()
-                        st.download_button(
-                            label=f"Download {selected_file}",
-                            data=file_data,
-                            file_name=selected_file,
-                            mime="application/octet-stream",
-                        )
-                    
-                    st.markdown("---")
-                    st.subheader("Document Preview")
-                    
-                    file_extension = os.path.splitext(selected_file)[1].lower()
-                    
-                    try:
-                        if file_extension == ".pdf":
-                            with open(file_path, "rb") as f:
-                                pdf_data = f.read()
-                            pdf_viewer(input=pdf_data)
-                        
-                        elif file_extension in [".png", ".jpg", ".jpeg"]:
-                            st.image(file_path)
-                            
-                        elif file_extension in [".csv"]:
-                            df_preview = pd.read_csv(file_path)
-                            st.dataframe(df_preview)
-                            
-                        elif file_extension in [".xlsx", ".xls"]:
-                            df_preview = pd.read_excel(file_path)
-                            st.dataframe(df_preview)
-                            
-                        elif file_extension in [".txt", ".md", ".py", ".json", ".js", ".html", ".css"]:
-                            with open(file_path, "r", encoding="utf-8") as f:
-                                st.text(f.read())
-                        else:
-                            st.info(f"Preview not available for {file_extension} files. Please download to view.")
-                    except Exception as e:
-                        st.error(f"Error previewing file: {str(e)}")
-            else:
-                st.info("No local documents found matching your search.")
-        else:
-            st.info("No local documents uploaded yet.")
+        df = pd.DataFrame(all_files)
         
-        if drive_links:
-            df_drive = pd.DataFrame(drive_links)
+        if selected_types:
+            df = df[df["Type"].isin(selected_types)]
+        
+        if search_query:
+            df = df[df["Filename"].str.contains(search_query, case=False)]
+        
+        if not df.empty:
+            df_display = df.reset_index(drop=True)
+            df_display.index = df_display.index + 1
             
-            if selected_types and "Type" in df_drive.columns:
-                df_drive = df_drive[df_drive["Type"].isin(selected_types)]
+            # Documents Section
+            st.subheader("Available Documents")
+            # Reorder columns to show Source
+            cols = ["Filename", "Type", "Source", "Size (KB)", "Upload Date"]
+            # Ensure cols exist
+            cols = [c for c in cols if c in df_display.columns]
+            st.dataframe(df_display[cols], use_container_width=True)
+
+            st.markdown("---")
+
+            # Preview & Actions Section
+            st.subheader("Document Actions")
+            selected_file_name = st.selectbox("Select a document to view/download", df["Filename"])
             
-            if search_query and "Name" in df_drive.columns:
-                name_match = df_drive["Name"].str.contains(search_query, case=False)
-                if "Description" in df_drive.columns:
-                    desc_match = df_drive["Description"].fillna("").str.contains(search_query, case=False)
-                    mask = name_match | desc_match
-                else:
-                    mask = name_match
-                df_drive = df_drive[mask]
-            
-            if not df_drive.empty:
-                st.markdown("---")
-                st.subheader("Google Drive Documents")
-                df_drive_display = df_drive.reset_index(drop=True)
-                df_drive_display.index = df_drive_display.index + 1
-                st.dataframe(df_drive_display, use_container_width=True)
+            if selected_file_name:
+                selected_row = df[df["Filename"] == selected_file_name].iloc[0]
                 
-                selected_drive = st.selectbox("Select a Google Drive document to open", df_drive["Name"])
-                if selected_drive:
-                    row = df_drive[df_drive["Name"] == selected_drive].iloc[0]
-                    st.link_button(f"Open in Google Drive: {selected_drive}", row["URL"])
-            else:
-                st.info("No Google Drive documents found matching your search.")
+                col1, col2 = st.columns([1, 1])
+                
+                with col1:
+                    st.info(f"Selected: **{selected_file_name}** ({selected_row['Source']})")
+
+                with col2:
+                    if selected_row["Source"] == "Google Drive":
+                         st.link_button(f"🔗 Open in Google Drive", selected_row["URL"])
+                    else:
+                        # Local File Logic
+                        file_path = os.path.join(UPLOAD_DIR, selected_file_name)
+                        
+                        if os.path.exists(file_path):
+                            # Download Button
+                            with open(file_path, "rb") as f:
+                                file_data = f.read()
+                                st.download_button(
+                                    label=f"⬇️ Download File",
+                                    data=file_data,
+                                    file_name=selected_file_name,
+                                    mime="application/octet-stream",
+                                )
+                            
+                            # Preview Link
+                            preview_html = get_preview_link_html(file_path, selected_file_name)
+                            st.markdown(preview_html, unsafe_allow_html=True)
+                        else:
+                            st.error("File not found locally.")
         else:
-            st.info("No Google Drive links added yet.")
+            st.info("No documents found matching your search.")
 
 elif page == "Admin Upload":
     if logo_path:
@@ -530,10 +610,19 @@ elif page == "Admin Upload":
     password = st.text_input("Enter Admin Password", type="password")
     
     if password == "admin123":  # Simple password for demo
-        tab1, tab2 = st.tabs(["Upload Local Document", "Manage Google Drive Database"])
+        # Sync Button (useful for multiple admins)
+        if st.button("🔄 Sync Repository from GitHub"):
+            with st.spinner("Syncing from GitHub..."):
+                sync_from_github.clear()
+                sync_from_github()
+            st.success("Repository synced from GitHub!")
+            st.rerun()
+
+        tab1, tab2 = st.tabs(["Upload Local Document", "Manage Google Drive Links"])
         
         with tab1:
             st.subheader("Upload Local Document")
+
             uploaded_file = st.file_uploader("Choose a file", accept_multiple_files=False)
             doc_type = st.selectbox("Select Document Type", ["SOP", "Manual", "Forms", "Registers", "Work Instructions", "Posters"])
             
@@ -574,95 +663,114 @@ elif page == "Admin Upload":
                 st.markdown("### Delete Files")
                 file_to_delete = st.selectbox("Select file to delete", [f["Filename"] for f in files])
                 if st.button("Delete File"):
-                    os.remove(os.path.join(UPLOAD_DIR, file_to_delete))
-                    st.success(f"File '{file_to_delete}' deleted!")
+                    # 1. Delete local file
+                    try:
+                        os.remove(os.path.join(UPLOAD_DIR, file_to_delete))
+                        st.success(f"File '{file_to_delete}' deleted locally!")
+                    except Exception as e:
+                        st.error(f"Error deleting local file: {e}")
+
+                    # 2. Update metadata
+                    metadata = load_metadata()
+                    if file_to_delete in metadata:
+                        del metadata[file_to_delete]
+                        with open(METADATA_FILE, "w") as f:
+                            json.dump(metadata, f, indent=4)
+                    
+                    # 3. Delete from GitHub
+                    with st.spinner("Deleting from GitHub..."):
+                        success, message = delete_from_github(file_to_delete)
+                        if success:
+                            st.success(message)
+                            # 4. Sync metadata to GitHub
+                            meta_success, meta_msg = upload_to_github(METADATA_FILE, "metadata.json")
+                            if not meta_success:
+                                 st.warning(f"Metadata update failed on GitHub: {meta_msg}")
+                        else:
+                            st.warning(message)
+
                     st.rerun()
             else:
                 st.info("No documents uploaded yet.")
 
         with tab2:
-            st.subheader("Manage Google Drive Database")
-            st.info("Build your document database by adding Google Drive links. These links will be searchable by users.")
+            st.subheader("Manage Google Drive Links")
+            drive_links = load_drive_links()
             
-            if st.button("🔄 Sync Database from GitHub"):
-                with st.spinner("Syncing from GitHub..."):
-                    sync_from_github.clear()
-                    sync_from_github()
-                st.success("Database synced from GitHub!")
-                st.rerun()
-            
-            col_add, col_bulk = st.columns([1, 1])
-            
-            with col_add:
-                st.markdown("#### Add Single Link")
-                drive_name = st.text_input("Google Drive Document Name")
-                drive_url = st.text_input("Google Drive URL")
-                drive_type = st.selectbox(
-                    "Document Type for Google Drive Link",
-                    ["SOP", "Manual", "Forms", "Registers", "Work Instructions", "Posters"],
-                    key="drive_type_single"
-                )
-                drive_description = st.text_area("Short Description (optional)", "")
+            # Form to Add/Edit
+            with st.expander("Add / Edit Link", expanded=True):
+                # Selection for edit mode
+                link_options = ["New Link"] + [l["name"] for l in drive_links]
+                selected_link_name = st.selectbox("Select Link to Edit (or New Link)", link_options)
                 
-                if st.button("Add Google Drive Link"):
-                    if drive_name and drive_url:
-                        drive_path = add_drive_link(drive_name, drive_type, drive_url, drive_description)
-                        st.success("Google Drive link added.")
-                        with st.spinner("Syncing Google Drive links to GitHub..."):
-                            link_success, link_msg = upload_to_github(drive_path, "drive_links.json")
-                            if link_success:
-                                st.success(link_msg)
-                            else:
-                                st.warning(link_msg)
-                    else:
-                        st.warning("Please enter both document name and Google Drive URL.")
-
-            with col_bulk:
-                st.markdown("#### Bulk Upload via CSV")
-                st.caption("Upload a CSV with columns: Name, URL, Type, Description")
-                bulk_file = st.file_uploader("Upload CSV", type=["csv"])
-                if bulk_file:
-                    if st.button("Process Bulk Upload"):
-                        try:
-                            df_bulk = pd.read_csv(bulk_file)
-                            required_cols = ["Name", "URL", "Type"]
-                            if all(col in df_bulk.columns for col in required_cols):
-                                count = 0
-                                for _, row in df_bulk.iterrows():
-                                    desc = row["Description"] if "Description" in df_bulk.columns else ""
-                                    add_drive_link(row["Name"], row["Type"], row["URL"], desc)
-                                    count += 1
-                                
-                                st.success(f"Successfully added {count} links from CSV.")
-                                # Sync after bulk add
-                                with st.spinner("Syncing to GitHub..."):
-                                    upload_to_github(DRIVE_LINKS_FILE, "drive_links.json")
-                            else:
-                                st.error(f"CSV must contain columns: {', '.join(required_cols)}")
-                        except Exception as e:
-                            st.error(f"Error processing CSV: {str(e)}")
-
-            st.markdown("---")
-            st.markdown("#### Current Google Drive Database")
-            drive_links_admin = load_drive_links()
-            if drive_links_admin:
-                df_drive_admin = pd.DataFrame(drive_links_admin)
-                df_drive_admin_display = df_drive_admin.reset_index(drop=True)
-                df_drive_admin_display.index = df_drive_admin_display.index + 1
-                st.dataframe(df_drive_admin_display, use_container_width=True)
+                # Default values
+                name_val = ""
+                url_val = ""
+                type_val = "SOP"
                 
-                # Delete option for Drive Links
-                link_to_delete = st.selectbox("Select link to delete", [l["Name"] for l in drive_links_admin], key="delete_drive_link")
-                if st.button("Delete Google Drive Link"):
-                    # Remove link logic
-                    new_links = [l for l in drive_links_admin if l["Name"] != link_to_delete]
-                    with open(DRIVE_LINKS_FILE, "w") as f:
-                        json.dump(new_links, f, indent=4)
-                    st.success(f"Link '{link_to_delete}' deleted!")
-                    upload_to_github(DRIVE_LINKS_FILE, "drive_links.json")
+                if selected_link_name != "New Link":
+                    # Find link data
+                    link_data = next((l for l in drive_links if l["name"] == selected_link_name), None)
+                    if link_data:
+                        name_val = link_data.get("name", "")
+                        url_val = link_data.get("url", "")
+                        type_val = link_data.get("type", "SOP")
+                
+                with st.form("drive_link_form"):
+                    new_name = st.text_input("Document Name", value=name_val)
+                    new_url = st.text_input("Google Drive URL", value=url_val)
+                    new_type = st.selectbox("Document Type", ["SOP", "Manual", "Forms", "Registers", "Work Instructions", "Posters"], index=["SOP", "Manual", "Forms", "Registers", "Work Instructions", "Posters"].index(type_val) if type_val in ["SOP", "Manual", "Forms", "Registers", "Work Instructions", "Posters"] else 0)
+                    
+                    submitted = st.form_submit_button("Save Link")
+                    
+                    if submitted:
+                        if new_name and new_url:
+                            # Update or Add
+                            # Remove old entry if editing (based on original name selected_link_name)
+                            if selected_link_name != "New Link":
+                                drive_links = [l for l in drive_links if l["name"] != selected_link_name]
+                            
+                            # Add new
+                            drive_links.append({
+                                "name": new_name,
+                                "url": new_url,
+                                "type": new_type,
+                                "added_on": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                            })
+                            
+                            saved_path = save_drive_links(drive_links)
+                            st.success(f"Link '{new_name}' saved locally!")
+                            
+                            # Sync to GitHub
+                            with st.spinner("Syncing to GitHub..."):
+                                success, msg = upload_to_github(saved_path, "drive_links.json")
+                                if success:
+                                    st.success(msg)
+                                else:
+                                    st.error(msg)
+                            st.rerun()
+                        else:
+                            st.warning("Please provide both Name and URL.")
+            
+            # Display and Delete
+            if drive_links:
+                st.subheader("Existing Links")
+                df_links = pd.DataFrame(drive_links)
+                st.dataframe(df_links, use_container_width=True)
+                
+                link_to_delete = st.selectbox("Select link to delete", [l["name"] for l in drive_links], key="del_link")
+                if st.button("Delete Link"):
+                    drive_links = [l for l in drive_links if l["name"] != link_to_delete]
+                    saved_path = save_drive_links(drive_links)
+                    st.success(f"Link '{link_to_delete}' deleted locally.")
+                    
+                    # Sync
+                    with st.spinner("Syncing deletion to GitHub..."):
+                        upload_to_github(saved_path, "drive_links.json")
+                    
                     st.rerun()
             else:
-                st.info("No Google Drive links in database.")
+                st.info("No Google Drive links added yet.")
     else:
         if password:
             st.error("Incorrect password")
