@@ -138,52 +138,40 @@ def save_drive_links(links):
         json.dump(links, f, indent=4)
     return DRIVE_LINKS_FILE
 
-def get_preview_link_html(file_path, file_name):
-    """Generates an HTML link to open the file in a new tab."""
+
+@st.dialog("Document Preview", width="large")
+def preview_document_modal(file_path, file_name):
+    """
+    Displays the document preview in a modal dialog.
+    """
+    st.write(f"### {file_name}")
+    
+    file_ext = os.path.splitext(file_name)[1].lower()
+    
     try:
-        with open(file_path, "rb") as f:
-            data = f.read()
-        
-        b64_data = base64.b64encode(data).decode()
-        file_ext = os.path.splitext(file_name)[1].lower()
-        
-        mime_type = "application/octet-stream"
         if file_ext == ".pdf":
-            mime_type = "application/pdf"
-        elif file_ext in [".png", ".jpg", ".jpeg"]:
-            mime_type = f"image/{file_ext[1:]}"
-        elif file_ext == ".txt":
-            mime_type = "text/plain"
-        elif file_ext == ".html":
-            mime_type = "text/html"
-        # For CSV/Excel, we render them as HTML tables for preview
-        elif file_ext in [".csv"]:
-             try:
-                 df = pd.read_csv(file_path)
-                 html = df.to_html(classes='table table-striped')
-                 full_html = f"<html><head><title>{file_name}</title><style>body{{font-family:sans-serif;padding:20px;}} table{{border-collapse:collapse;width:100%;}} th,td{{border:1px solid #ddd;padding:8px;}} tr:nth-child(even){{background-color:#f2f2f2;}} th{{padding-top:12px;padding-bottom:12px;text-align:left;background-color:#04AA6D;color:white;}}</style></head><body><h2>{file_name}</h2>{html}</body></html>"
-                 b64_data = base64.b64encode(full_html.encode('utf-8')).decode()
-                 mime_type = "text/html"
-             except:
-                 pass 
-        elif file_ext in [".xlsx", ".xls"]:
-             try:
-                 df = pd.read_excel(file_path)
-                 html = df.to_html(classes='table table-striped')
-                 full_html = f"<html><head><title>{file_name}</title><style>body{{font-family:sans-serif;padding:20px;}} table{{border-collapse:collapse;width:100%;}} th,td{{border:1px solid #ddd;padding:8px;}} tr:nth-child(even){{background-color:#f2f2f2;}} th{{padding-top:12px;padding-bottom:12px;text-align:left;background-color:#04AA6D;color:white;}}</style></head><body><h2>{file_name}</h2>{html}</body></html>"
-                 b64_data = base64.b64encode(full_html.encode('utf-8')).decode()
-                 mime_type = "text/html"
-             except:
-                 pass
-
-        href = f'data:{mime_type};base64,{b64_data}'
+             with open(file_path, "rb") as f:
+                 pdf_data = f.read()
+             pdf_viewer(input=pdf_data)
         
-        # Style the link to look like a button
-        button_style = "display: inline-block; padding: 0.5em 1em; color: white; background-color: #00796b; border-radius: 8px; text-decoration: none; font-weight: 500; margin-top: 10px;"
-        return f'<a href="{href}" target="_blank" style="{button_style}">📄 Open Preview in New Window</a>'
+        elif file_ext in [".png", ".jpg", ".jpeg"]:
+             st.image(file_path, use_container_width=True)
+             
+        elif file_ext in [".csv"]:
+             df_preview = pd.read_csv(file_path)
+             st.dataframe(df_preview, use_container_width=True)
+             
+        elif file_ext in [".xlsx", ".xls"]:
+             df_preview = pd.read_excel(file_path)
+             st.dataframe(df_preview, use_container_width=True)
+             
+        elif file_ext in [".txt", ".md", ".py", ".json", ".js", ".html", ".css"]:
+             with open(file_path, "r", encoding="utf-8") as f:
+                 st.text(f.read())
+        else:
+             st.info(f"Preview not available for {file_extension} files. Please download to view.")
     except Exception as e:
-        return f"Error generating preview: {str(e)}"
-
+        st.error(f"Error previewing file: {str(e)}")
 
 # Helper functions
 def get_logo_path():
@@ -590,8 +578,8 @@ if page == "Document Search":
                                 )
                             
                             # Preview Link
-                            preview_html = get_preview_link_html(file_path, selected_file_name)
-                            st.markdown(preview_html, unsafe_allow_html=True)
+                            if st.button("📄 Preview Document", key="preview_btn"):
+                                preview_document_modal(file_path, selected_file_name)
                         else:
                             st.error("File not found locally.")
         else:
