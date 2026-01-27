@@ -523,82 +523,132 @@ elif page == "Admin Upload":
     password = st.text_input("Enter Admin Password", type="password")
     
     if password == "admin123":  # Simple password for demo
-        uploaded_file = st.file_uploader("Choose a file", accept_multiple_files=False)
-        doc_type = st.selectbox("Select Document Type", ["SOP", "Manual", "Forms", "Registers", "Work Instructions", "Posters"])
+        tab1, tab2 = st.tabs(["Upload Local Document", "Manage Google Drive Database"])
         
-        if uploaded_file is not None:
-            if st.button("Upload Document"):
-                file_path = save_file(uploaded_file)
-                if file_path:
-                    # Update metadata
-                    update_metadata(uploaded_file.name, doc_type)
-                    
-                    st.success(f"File '{uploaded_file.name}' saved locally!")
-                    
-                    # Backup to GitHub
-                    with st.spinner("Backing up to GitHub..."):
-                        # Upload file
-                        success, message = upload_to_github(file_path, uploaded_file.name)
-                        
-                        # Upload metadata
-                        meta_success, meta_msg = upload_to_github(METADATA_FILE, "metadata.json")
-                        
-                        if success:
-                            st.success(message)
-                        else:
-                            st.warning(message)
-                else:
-                    st.error("Failed to save file locally.")
-                    
-        st.markdown("---")
-        st.subheader("Current Repository Content")
-        files = get_files()
-        
-        if files:
-            df = pd.DataFrame(files)
-            df_display = df.reset_index(drop=True)
-            df_display.index = df_display.index + 1
-            st.dataframe(df_display, use_container_width=True)
+        with tab1:
+            st.subheader("Upload Local Document")
+            uploaded_file = st.file_uploader("Choose a file", accept_multiple_files=False)
+            doc_type = st.selectbox("Select Document Type", ["SOP", "Manual", "Forms", "Registers", "Work Instructions", "Posters"])
             
-            st.markdown("### Delete Files")
-            file_to_delete = st.selectbox("Select file to delete", [f["Filename"] for f in files])
-            if st.button("Delete File"):
-                os.remove(os.path.join(UPLOAD_DIR, file_to_delete))
-                st.success(f"File '{file_to_delete}' deleted!")
-                st.rerun()
-        else:
-            st.info("No documents uploaded yet.")
-        
-        st.markdown("---")
-        st.subheader("Manage Google Drive Links")
-        
-        drive_name = st.text_input("Google Drive Document Name")
-        drive_url = st.text_input("Google Drive URL")
-        drive_type = st.selectbox(
-            "Document Type for Google Drive Link",
-            ["SOP", "Manual", "Forms", "Registers", "Work Instructions", "Posters"],
-        )
-        drive_description = st.text_area("Short Description (optional)", "")
-        
-        if st.button("Add Google Drive Link"):
-            if drive_name and drive_url:
-                drive_path = add_drive_link(drive_name, drive_type, drive_url, drive_description)
-                st.success("Google Drive link added.")
-                with st.spinner("Syncing Google Drive links to GitHub..."):
-                    link_success, link_msg = upload_to_github(drive_path, "drive_links.json")
-                    if link_success:
-                        st.success(link_msg)
+            if uploaded_file is not None:
+                if st.button("Upload Document"):
+                    file_path = save_file(uploaded_file)
+                    if file_path:
+                        # Update metadata
+                        update_metadata(uploaded_file.name, doc_type)
+                        
+                        st.success(f"File '{uploaded_file.name}' saved locally!")
+                        
+                        # Backup to GitHub
+                        with st.spinner("Backing up to GitHub..."):
+                            # Upload file
+                            success, message = upload_to_github(file_path, uploaded_file.name)
+                            
+                            # Upload metadata
+                            meta_success, meta_msg = upload_to_github(METADATA_FILE, "metadata.json")
+                            
+                            if success:
+                                st.success(message)
+                            else:
+                                st.warning(message)
                     else:
-                        st.warning(link_msg)
+                        st.error("Failed to save file locally.")
+                        
+            st.markdown("---")
+            st.subheader("Current Local Repository Content")
+            files = get_files()
+            
+            if files:
+                df = pd.DataFrame(files)
+                df_display = df.reset_index(drop=True)
+                df_display.index = df_display.index + 1
+                st.dataframe(df_display, use_container_width=True)
+                
+                st.markdown("### Delete Files")
+                file_to_delete = st.selectbox("Select file to delete", [f["Filename"] for f in files])
+                if st.button("Delete File"):
+                    os.remove(os.path.join(UPLOAD_DIR, file_to_delete))
+                    st.success(f"File '{file_to_delete}' deleted!")
+                    st.rerun()
             else:
-                st.warning("Please enter both document name and Google Drive URL.")
-        
-        drive_links_admin = load_drive_links()
-        if drive_links_admin:
-            df_drive_admin = pd.DataFrame(drive_links_admin)
-            df_drive_admin_display = df_drive_admin.reset_index(drop=True)
-            df_drive_admin_display.index = df_drive_admin_display.index + 1
-            st.dataframe(df_drive_admin_display, use_container_width=True)
+                st.info("No documents uploaded yet.")
+
+        with tab2:
+            st.subheader("Manage Google Drive Database")
+            st.info("Build your document database by adding Google Drive links. These links will be searchable by users.")
+            
+            col_add, col_bulk = st.columns([1, 1])
+            
+            with col_add:
+                st.markdown("#### Add Single Link")
+                drive_name = st.text_input("Google Drive Document Name")
+                drive_url = st.text_input("Google Drive URL")
+                drive_type = st.selectbox(
+                    "Document Type for Google Drive Link",
+                    ["SOP", "Manual", "Forms", "Registers", "Work Instructions", "Posters"],
+                    key="drive_type_single"
+                )
+                drive_description = st.text_area("Short Description (optional)", "")
+                
+                if st.button("Add Google Drive Link"):
+                    if drive_name and drive_url:
+                        drive_path = add_drive_link(drive_name, drive_type, drive_url, drive_description)
+                        st.success("Google Drive link added.")
+                        with st.spinner("Syncing Google Drive links to GitHub..."):
+                            link_success, link_msg = upload_to_github(drive_path, "drive_links.json")
+                            if link_success:
+                                st.success(link_msg)
+                            else:
+                                st.warning(link_msg)
+                    else:
+                        st.warning("Please enter both document name and Google Drive URL.")
+
+            with col_bulk:
+                st.markdown("#### Bulk Upload via CSV")
+                st.caption("Upload a CSV with columns: Name, URL, Type, Description")
+                bulk_file = st.file_uploader("Upload CSV", type=["csv"])
+                if bulk_file:
+                    if st.button("Process Bulk Upload"):
+                        try:
+                            df_bulk = pd.read_csv(bulk_file)
+                            required_cols = ["Name", "URL", "Type"]
+                            if all(col in df_bulk.columns for col in required_cols):
+                                count = 0
+                                for _, row in df_bulk.iterrows():
+                                    desc = row["Description"] if "Description" in df_bulk.columns else ""
+                                    add_drive_link(row["Name"], row["Type"], row["URL"], desc)
+                                    count += 1
+                                
+                                st.success(f"Successfully added {count} links from CSV.")
+                                # Sync after bulk add
+                                with st.spinner("Syncing to GitHub..."):
+                                    upload_to_github(DRIVE_LINKS_FILE, "drive_links.json")
+                            else:
+                                st.error(f"CSV must contain columns: {', '.join(required_cols)}")
+                        except Exception as e:
+                            st.error(f"Error processing CSV: {str(e)}")
+
+            st.markdown("---")
+            st.markdown("#### Current Google Drive Database")
+            drive_links_admin = load_drive_links()
+            if drive_links_admin:
+                df_drive_admin = pd.DataFrame(drive_links_admin)
+                df_drive_admin_display = df_drive_admin.reset_index(drop=True)
+                df_drive_admin_display.index = df_drive_admin_display.index + 1
+                st.dataframe(df_drive_admin_display, use_container_width=True)
+                
+                # Delete option for Drive Links
+                link_to_delete = st.selectbox("Select link to delete", [l["Name"] for l in drive_links_admin], key="delete_drive_link")
+                if st.button("Delete Google Drive Link"):
+                    # Remove link logic
+                    new_links = [l for l in drive_links_admin if l["Name"] != link_to_delete]
+                    with open(DRIVE_LINKS_FILE, "w") as f:
+                        json.dump(new_links, f, indent=4)
+                    st.success(f"Link '{link_to_delete}' deleted!")
+                    upload_to_github(DRIVE_LINKS_FILE, "drive_links.json")
+                    st.rerun()
+            else:
+                st.info("No Google Drive links in database.")
     else:
         if password:
             st.error("Incorrect password")
