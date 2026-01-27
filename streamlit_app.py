@@ -577,6 +577,13 @@ elif page == "Admin Upload":
             st.subheader("Manage Google Drive Database")
             st.info("Build your document database by adding Google Drive links. These links will be searchable by users.")
             
+            if st.button("🔄 Sync Database from GitHub"):
+                with st.spinner("Syncing from GitHub..."):
+                    sync_from_github.clear()
+                    sync_from_github()
+                st.success("Database synced from GitHub!")
+                st.rerun()
+            
             col_add, col_bulk = st.columns([1, 1])
             
             with col_add:
