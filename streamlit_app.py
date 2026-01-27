@@ -135,13 +135,10 @@ def upload_to_github(file_path, file_name):
         g = Github(token)
         
         # Get the repo
-        # Assuming the repo name is known or configurable
-        # Ideally, this should also be in secrets or derived
         repo_name = "shawredanalytics/quxatstore" 
         repo = g.get_repo(repo_name)
         
-        # Path in the repo where files should be stored
-        # Since 'web' is the root of the repo (based on git root check), we put it in 'uploads/'
+        # Path in the repo
         repo_path = f"uploads/{file_name}"
         
         # Read the file content
@@ -164,6 +161,53 @@ def upload_to_github(file_path, file_name):
                 
     except Exception as e:
         return False, f"GitHub upload failed: {str(e)}"
+
+@st.cache_resource
+def sync_from_github():
+    """
+    Syncs files from GitHub repository 'uploads' folder to local 'uploads' directory.
+    Run once per session start.
+    """
+    try:
+        if "GITHUB_TOKEN" not in st.secrets:
+            print("GitHub token not found in secrets. Sync disabled.")
+            return
+
+        token = st.secrets["GITHUB_TOKEN"]
+        g = Github(token)
+        repo_name = "shawredanalytics/quxatstore"
+        repo = g.get_repo(repo_name)
+        
+        try:
+            contents = repo.get_contents("uploads")
+            if not isinstance(contents, list):
+                contents = [contents]
+                
+            for content_file in contents:
+                if content_file.name == ".gitkeep":
+                    continue
+                    
+                local_path = os.path.join(UPLOAD_DIR, content_file.name)
+                
+                # Check if file exists locally
+                if not os.path.exists(local_path):
+                    # Download content
+                    file_content = content_file.decoded_content
+                    with open(local_path, "wb") as f:
+                        f.write(file_content)
+                    print(f"Downloaded {content_file.name} from GitHub.")
+                    
+        except GithubException as e:
+            if e.status == 404:
+                print("No uploads directory found in GitHub.")
+            else:
+                print(f"Error accessing GitHub uploads: {e}")
+                
+    except Exception as e:
+        print(f"GitHub sync failed: {str(e)}")
+
+# Run sync on startup
+sync_from_github()
 
 def get_files():
     files = []
