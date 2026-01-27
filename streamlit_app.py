@@ -106,6 +106,7 @@ if not os.path.exists(UPLOAD_DIR):
     os.makedirs(UPLOAD_DIR)
 
 METADATA_FILE = os.path.join(UPLOAD_DIR, "metadata.json")
+DRIVE_LINKS_FILE = os.path.join(UPLOAD_DIR, "drive_links.json")
 
 def load_metadata():
     if os.path.exists(METADATA_FILE):
@@ -122,6 +123,29 @@ def update_metadata(filename, doc_type):
     with open(METADATA_FILE, "w") as f:
         json.dump(metadata, f, indent=4)
     return METADATA_FILE
+
+def load_drive_links():
+    if os.path.exists(DRIVE_LINKS_FILE):
+        with open(DRIVE_LINKS_FILE, "r") as f:
+            try:
+                return json.load(f)
+            except:
+                return []
+    return []
+
+def add_drive_link(name, doc_type, url, description):
+    links = load_drive_links()
+    links.append(
+        {
+            "Name": name,
+            "Type": doc_type,
+            "URL": url,
+            "Description": description,
+        }
+    )
+    with open(DRIVE_LINKS_FILE, "w") as f:
+        json.dump(links, f, indent=4)
+    return DRIVE_LINKS_FILE
 
 # Helper functions
 def get_logo_path():
@@ -208,9 +232,7 @@ def sync_from_github():
                     
                 local_path = os.path.join(UPLOAD_DIR, content_file.name)
                 
-                # Check if file exists locally or if it is metadata (always update metadata)
-                if not os.path.exists(local_path) or content_file.name == "metadata.json":
-                    # Download content
+                if not os.path.exists(local_path) or content_file.name in ["metadata.json", "drive_links.json"]:
                     file_content = content_file.decoded_content
                     with open(local_path, "wb") as f:
                         f.write(file_content)
@@ -233,15 +255,17 @@ def get_files():
     files = []
     if os.path.exists(UPLOAD_DIR):
         for filename in os.listdir(UPLOAD_DIR):
-            if filename != ".gitkeep" and filename != "metadata.json":
+            if filename not in [".gitkeep", "metadata.json", "drive_links.json"]:
                 file_path = os.path.join(UPLOAD_DIR, filename)
                 stats = os.stat(file_path)
-                files.append({
-                    "Filename": filename,
-                    "Type": metadata.get(filename, "General"),
-                    "Size (KB)": round(stats.st_size / 1024, 2),
-                    "Upload Date": datetime.fromtimestamp(stats.st_mtime).strftime('%Y-%m-%d %H:%M:%S')
-                })
+                files.append(
+                    {
+                        "Filename": filename,
+                        "Type": metadata.get(filename, "General"),
+                        "Size (KB)": round(stats.st_size / 1024, 2),
+                        "Upload Date": datetime.fromtimestamp(stats.st_mtime).strftime("%Y-%m-%d %H:%M:%S"),
+                    }
+                )
     return files
 
 # Sidebar for navigation
@@ -365,89 +389,126 @@ if page == "Document Search":
     st.header("Search Healthcare Quality Systems Documents")
     st.markdown("Find SOPs, manuals, checklists, and forms for accreditation.")
     
-    # Search bar container
     with st.container():
-        # Search bar
         search_query = st.text_input(
             "🔍 Enter keywords to find documents:",
             placeholder="e.g., NABL SOP, Infection Control Manual, Fire Safety Form...",
-            help="Type document names or keywords to filter the list."
+            help="Type document names or keywords to filter the list.",
         )
     
-    # Get files
     files = get_files()
+    drive_links = load_drive_links()
     
-    if files:
-        df = pd.DataFrame(files)
-        
-        # Filter by Type
-        if 'Type' in df.columns:
-            all_types = list(df['Type'].unique())
-            selected_types = st.multiselect("Filter by Document Type", all_types)
-            if selected_types:
-                df = df[df['Type'].isin(selected_types)]
-        
-        # Filter if search query exists
-        if search_query:
-            df = df[df['Filename'].str.contains(search_query, case=False)]
-        
-        if not df.empty:
-            # Display files
-            df_display = df.reset_index(drop=True)
-            df_display.index = df_display.index + 1
-            st.dataframe(df_display, use_container_width=True)
-            
-            # View & Download section
-            st.subheader("View & Download")
-            selected_file = st.selectbox("Select a file to view/download", df['Filename'])
-            
-            if selected_file:
-                file_path = os.path.join(UPLOAD_DIR, selected_file)
-                
-                # Download Button
-                with open(file_path, "rb") as f:
-                    file_data = f.read()
-                    st.download_button(
-                        label=f"Download {selected_file}",
-                        data=file_data,
-                        file_name=selected_file,
-                        mime="application/octet-stream"
-                    )
-                
-                # Preview Logic
-                st.markdown("---")
-                st.subheader("Document Preview")
-                
-                file_extension = os.path.splitext(selected_file)[1].lower()
-                
-                try:
-                    if file_extension == ".pdf":
-                        with open(file_path, "rb") as f:
-                            pdf_data = f.read()
-                        pdf_viewer(input=pdf_data)
-                    
-                    elif file_extension in [".png", ".jpg", ".jpeg"]:
-                        st.image(file_path)
-                        
-                    elif file_extension in [".csv"]:
-                        df_preview = pd.read_csv(file_path)
-                        st.dataframe(df_preview)
-                        
-                    elif file_extension in [".xlsx", ".xls"]:
-                        df_preview = pd.read_excel(file_path)
-                        st.dataframe(df_preview)
-                        
-                    elif file_extension in [".txt", ".md", ".py", ".json", ".js", ".html", ".css"]:
-                        with open(file_path, "r", encoding="utf-8") as f:
-                            st.text(f.read())
-                    else:
-                        st.info(f"Preview not available for {file_extension} files. Please download to view.")
-                except Exception as e:
-                    st.error(f"Error previewing file: {str(e)}")
-        else:
-            st.info("No documents found matching your search.")
+    all_types = set()
+    for f in files:
+        doc_type = f.get("Type")
+        if doc_type:
+            all_types.add(doc_type)
+    for link in drive_links:
+        doc_type = link.get("Type")
+        if doc_type:
+            all_types.add(doc_type)
+    
+    selected_types = []
+    if all_types:
+        selected_types = st.multiselect("Filter by Document Type", sorted(list(all_types)))
+    
+    if not files and not drive_links:
+        st.info("No documents available yet.")
     else:
-        st.info("No documents uploaded yet.")
+        if files:
+            df = pd.DataFrame(files)
+            
+            if selected_types:
+                df = df[df["Type"].isin(selected_types)]
+            
+            if search_query:
+                df = df[df["Filename"].str.contains(search_query, case=False)]
+            
+            if not df.empty:
+                df_display = df.reset_index(drop=True)
+                df_display.index = df_display.index + 1
+                st.dataframe(df_display, use_container_width=True)
+                
+                st.subheader("View & Download Local Documents")
+                selected_file = st.selectbox("Select a local file to view/download", df["Filename"])
+                
+                if selected_file:
+                    file_path = os.path.join(UPLOAD_DIR, selected_file)
+                    
+                    with open(file_path, "rb") as f:
+                        file_data = f.read()
+                        st.download_button(
+                            label=f"Download {selected_file}",
+                            data=file_data,
+                            file_name=selected_file,
+                            mime="application/octet-stream",
+                        )
+                    
+                    st.markdown("---")
+                    st.subheader("Document Preview")
+                    
+                    file_extension = os.path.splitext(selected_file)[1].lower()
+                    
+                    try:
+                        if file_extension == ".pdf":
+                            with open(file_path, "rb") as f:
+                                pdf_data = f.read()
+                            pdf_viewer(input=pdf_data)
+                        
+                        elif file_extension in [".png", ".jpg", ".jpeg"]:
+                            st.image(file_path)
+                            
+                        elif file_extension in [".csv"]:
+                            df_preview = pd.read_csv(file_path)
+                            st.dataframe(df_preview)
+                            
+                        elif file_extension in [".xlsx", ".xls"]:
+                            df_preview = pd.read_excel(file_path)
+                            st.dataframe(df_preview)
+                            
+                        elif file_extension in [".txt", ".md", ".py", ".json", ".js", ".html", ".css"]:
+                            with open(file_path, "r", encoding="utf-8") as f:
+                                st.text(f.read())
+                        else:
+                            st.info(f"Preview not available for {file_extension} files. Please download to view.")
+                    except Exception as e:
+                        st.error(f"Error previewing file: {str(e)}")
+            else:
+                st.info("No local documents found matching your search.")
+        else:
+            st.info("No local documents uploaded yet.")
+        
+        if drive_links:
+            df_drive = pd.DataFrame(drive_links)
+            
+            if selected_types and "Type" in df_drive.columns:
+                df_drive = df_drive[df_drive["Type"].isin(selected_types)]
+            
+            if search_query and "Name" in df_drive.columns:
+                name_match = df_drive["Name"].str.contains(search_query, case=False)
+                if "Description" in df_drive.columns:
+                    desc_match = df_drive["Description"].fillna("").str.contains(search_query, case=False)
+                    mask = name_match | desc_match
+                else:
+                    mask = name_match
+                df_drive = df_drive[mask]
+            
+            if not df_drive.empty:
+                st.markdown("---")
+                st.subheader("Google Drive Documents")
+                df_drive_display = df_drive.reset_index(drop=True)
+                df_drive_display.index = df_drive_display.index + 1
+                st.dataframe(df_drive_display, use_container_width=True)
+                
+                selected_drive = st.selectbox("Select a Google Drive document to open", df_drive["Name"])
+                if selected_drive:
+                    row = df_drive[df_drive["Name"] == selected_drive].iloc[0]
+                    st.link_button(f"Open in Google Drive: {selected_drive}", row["URL"])
+            else:
+                st.info("No Google Drive documents found matching your search.")
+        else:
+            st.info("No Google Drive links added yet.")
 
 elif page == "Admin Upload":
     if logo_path:
@@ -459,7 +520,6 @@ elif page == "Admin Upload":
     else:
         st.header("Admin Upload")
     
-    # Password protection (simple)
     password = st.text_input("Enter Admin Password", type="password")
     
     if password == "admin123":  # Simple password for demo
@@ -490,26 +550,55 @@ elif page == "Admin Upload":
                 else:
                     st.error("Failed to save file locally.")
                     
-        # File Management
         st.markdown("---")
         st.subheader("Current Repository Content")
         files = get_files()
         
         if files:
-            # Display list of files
             df = pd.DataFrame(files)
             df_display = df.reset_index(drop=True)
             df_display.index = df_display.index + 1
             st.dataframe(df_display, use_container_width=True)
             
             st.markdown("### Delete Files")
-            file_to_delete = st.selectbox("Select file to delete", [f['Filename'] for f in files])
+            file_to_delete = st.selectbox("Select file to delete", [f["Filename"] for f in files])
             if st.button("Delete File"):
                 os.remove(os.path.join(UPLOAD_DIR, file_to_delete))
                 st.success(f"File '{file_to_delete}' deleted!")
                 st.rerun()
         else:
             st.info("No documents uploaded yet.")
+        
+        st.markdown("---")
+        st.subheader("Manage Google Drive Links")
+        
+        drive_name = st.text_input("Google Drive Document Name")
+        drive_url = st.text_input("Google Drive URL")
+        drive_type = st.selectbox(
+            "Document Type for Google Drive Link",
+            ["SOP", "Manual", "Forms", "Registers", "Work Instructions", "Posters"],
+        )
+        drive_description = st.text_area("Short Description (optional)", "")
+        
+        if st.button("Add Google Drive Link"):
+            if drive_name and drive_url:
+                drive_path = add_drive_link(drive_name, drive_type, drive_url, drive_description)
+                st.success("Google Drive link added.")
+                with st.spinner("Syncing Google Drive links to GitHub..."):
+                    link_success, link_msg = upload_to_github(drive_path, "drive_links.json")
+                    if link_success:
+                        st.success(link_msg)
+                    else:
+                        st.warning(link_msg)
+            else:
+                st.warning("Please enter both document name and Google Drive URL.")
+        
+        drive_links_admin = load_drive_links()
+        if drive_links_admin:
+            df_drive_admin = pd.DataFrame(drive_links_admin)
+            df_drive_admin_display = df_drive_admin.reset_index(drop=True)
+            df_drive_admin_display.index = df_drive_admin_display.index + 1
+            st.dataframe(df_drive_admin_display, use_container_width=True)
     else:
         if password:
             st.error("Incorrect password")
