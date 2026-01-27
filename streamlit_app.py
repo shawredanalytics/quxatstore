@@ -5,6 +5,7 @@ import base64
 import urllib.parse
 from datetime import datetime
 import pandas as pd
+import json
 from streamlit_pdf_viewer import pdf_viewer
 from github import Github, GithubException
 
@@ -104,6 +105,24 @@ UPLOAD_DIR = "uploads"
 if not os.path.exists(UPLOAD_DIR):
     os.makedirs(UPLOAD_DIR)
 
+METADATA_FILE = os.path.join(UPLOAD_DIR, "metadata.json")
+
+def load_metadata():
+    if os.path.exists(METADATA_FILE):
+        with open(METADATA_FILE, "r") as f:
+            try:
+                return json.load(f)
+            except:
+                return {}
+    return {}
+
+def update_metadata(filename, doc_type):
+    metadata = load_metadata()
+    metadata[filename] = doc_type
+    with open(METADATA_FILE, "w") as f:
+        json.dump(metadata, f, indent=4)
+    return METADATA_FILE
+
 # Helper functions
 def get_logo_path():
     for ext in ["png", "jpg", "jpeg", "svg", "webp"]:
@@ -189,8 +208,8 @@ def sync_from_github():
                     
                 local_path = os.path.join(UPLOAD_DIR, content_file.name)
                 
-                # Check if file exists locally
-                if not os.path.exists(local_path):
+                # Check if file exists locally or if it is metadata (always update metadata)
+                if not os.path.exists(local_path) or content_file.name == "metadata.json":
                     # Download content
                     file_content = content_file.decoded_content
                     with open(local_path, "wb") as f:
@@ -210,14 +229,16 @@ def sync_from_github():
 sync_from_github()
 
 def get_files():
+    metadata = load_metadata()
     files = []
     if os.path.exists(UPLOAD_DIR):
         for filename in os.listdir(UPLOAD_DIR):
-            if filename != ".gitkeep":
+            if filename != ".gitkeep" and filename != "metadata.json":
                 file_path = os.path.join(UPLOAD_DIR, filename)
                 stats = os.stat(file_path)
                 files.append({
                     "Filename": filename,
+                    "Type": metadata.get(filename, "General"),
                     "Size (KB)": round(stats.st_size / 1024, 2),
                     "Upload Date": datetime.fromtimestamp(stats.st_mtime).strftime('%Y-%m-%d %H:%M:%S')
                 })
@@ -359,6 +380,13 @@ if page == "Document Search":
     if files:
         df = pd.DataFrame(files)
         
+        # Filter by Type
+        if 'Type' in df.columns:
+            all_types = list(df['Type'].unique())
+            selected_types = st.multiselect("Filter by Document Type", all_types)
+            if selected_types:
+                df = df[df['Type'].isin(selected_types)]
+        
         # Filter if search query exists
         if search_query:
             df = df[df['Filename'].str.contains(search_query, case=False)]
@@ -436,16 +464,25 @@ elif page == "Admin Upload":
     
     if password == "admin123":  # Simple password for demo
         uploaded_file = st.file_uploader("Choose a file", accept_multiple_files=False)
+        doc_type = st.selectbox("Select Document Type", ["SOP", "Manual", "Forms", "Registers", "Work Instructions", "Posters"])
         
         if uploaded_file is not None:
             if st.button("Upload Document"):
                 file_path = save_file(uploaded_file)
                 if file_path:
+                    # Update metadata
+                    update_metadata(uploaded_file.name, doc_type)
+                    
                     st.success(f"File '{uploaded_file.name}' saved locally!")
                     
                     # Backup to GitHub
                     with st.spinner("Backing up to GitHub..."):
+                        # Upload file
                         success, message = upload_to_github(file_path, uploaded_file.name)
+                        
+                        # Upload metadata
+                        meta_success, meta_msg = upload_to_github(METADATA_FILE, "metadata.json")
+                        
                         if success:
                             st.success(message)
                         else:
