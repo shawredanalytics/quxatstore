@@ -175,6 +175,9 @@ def upload_to_github(file_path, file_name):
             return False, "GitHub token not found in secrets. Backup disabled."
 
         token = st.secrets["GITHUB_TOKEN"]
+        if token == "your_github_token_here":
+            return False, "Please configure your actual GitHub token in .streamlit/secrets.toml"
+            
         g = Github(token)
         
         # Get the repo
@@ -217,6 +220,10 @@ def sync_from_github():
             return
 
         token = st.secrets["GITHUB_TOKEN"]
+        if token == "your_github_token_here":
+            print("Please configure your actual GitHub token in .streamlit/secrets.toml")
+            return
+            
         g = Github(token)
         repo_name = "shawredanalytics/quxatstore"
         repo = g.get_repo(repo_name)
