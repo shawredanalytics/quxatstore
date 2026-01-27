@@ -6,6 +6,7 @@ import urllib.parse
 from datetime import datetime
 import pandas as pd
 from streamlit_pdf_viewer import pdf_viewer
+from github import Github, GithubException
 
 # Page config
 st.set_page_config(
@@ -120,6 +121,49 @@ def save_file(uploaded_file):
             f.write(uploaded_file.getbuffer())
         return file_path
     return None
+
+def upload_to_github(file_path, file_name):
+    """
+    Uploads a file to the GitHub repository.
+    Requires 'GITHUB_TOKEN' in st.secrets.
+    """
+    try:
+        if "GITHUB_TOKEN" not in st.secrets:
+            return False, "GitHub token not found in secrets. Backup disabled."
+
+        token = st.secrets["GITHUB_TOKEN"]
+        g = Github(token)
+        
+        # Get the repo
+        # Assuming the repo name is known or configurable
+        # Ideally, this should also be in secrets or derived
+        repo_name = "shawredanalytics/quxatstore" 
+        repo = g.get_repo(repo_name)
+        
+        # Path in the repo where files should be stored
+        # Since 'web' is the root of the repo (based on git root check), we put it in 'uploads/'
+        repo_path = f"uploads/{file_name}"
+        
+        # Read the file content
+        with open(file_path, "rb") as f:
+            content = f.read()
+            
+        # Check if file exists to update or create
+        try:
+            contents = repo.get_contents(repo_path)
+            # Update
+            repo.update_file(contents.path, f"Update {file_name}", content, contents.sha)
+            return True, f"File updated in GitHub repository: {repo_name}"
+        except GithubException as e:
+            if e.status == 404:
+                # Create
+                repo.create_file(repo_path, f"Add {file_name}", content)
+                return True, f"File created in GitHub repository: {repo_name}"
+            else:
+                raise e
+                
+    except Exception as e:
+        return False, f"GitHub upload failed: {str(e)}"
 
 def get_files():
     files = []
@@ -353,9 +397,17 @@ elif page == "Admin Upload":
             if st.button("Upload Document"):
                 file_path = save_file(uploaded_file)
                 if file_path:
-                    st.success(f"File '{uploaded_file.name}' uploaded successfully!")
+                    st.success(f"File '{uploaded_file.name}' saved locally!")
+                    
+                    # Backup to GitHub
+                    with st.spinner("Backing up to GitHub..."):
+                        success, message = upload_to_github(file_path, uploaded_file.name)
+                        if success:
+                            st.success(message)
+                        else:
+                            st.warning(message)
                 else:
-                    st.error("Failed to upload file.")
+                    st.error("Failed to save file locally.")
                     
         # File Management
         st.markdown("---")

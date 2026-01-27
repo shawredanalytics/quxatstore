@@ -6,7 +6,6 @@ __pycache__/
 .next/
 
 # Uploads
-uploads/
 !uploads/.gitkeep
 subscribers.txt
 
