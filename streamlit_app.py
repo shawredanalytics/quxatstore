@@ -430,16 +430,27 @@ Team QuXAT"""
     st.markdown("Need help? Connect with our support team!")
     
     whatsapp_url = "https://wa.me/916301237212"
+    email_address = "quxat.team@gmail.com"
     
     st.markdown(
         f"""
-        <div style="display: flex; align-items: center; gap: 10px;">
-            <a href="{whatsapp_url}" target="_blank">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="40" alt="WhatsApp">
-            </a>
-            <a href="{whatsapp_url}" target="_blank" style="text-decoration: none; color: inherit; font-weight: bold;">
-                +91 6301237212
-            </a>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <a href="{whatsapp_url}" target="_blank">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="40" alt="WhatsApp">
+                </a>
+                <a href="{whatsapp_url}" target="_blank" style="text-decoration: none; color: inherit; font-weight: bold;">
+                    +91 6301237212
+                </a>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <a href="mailto:{email_address}">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg" width="40" alt="Email">
+                </a>
+                <a href="mailto:{email_address}" style="text-decoration: none; color: inherit; font-weight: bold;">
+                    {email_address}
+                </a>
+            </div>
         </div>
         """,
         unsafe_allow_html=True
@@ -458,18 +469,30 @@ st.markdown("<h2 style='text-align: center; color: #2e7d32;'>✅ Free Access for
 st.subheader("Repository for Healthcare Quality & Compliance Documentation")
 st.markdown("<p style='text-align: center;'>Access essential resources for JCI, NABH, NABL, ISO and other Healthcare Accreditation Standards.</p>", unsafe_allow_html=True)
 
-# WhatsApp Support Section (Below Hero)
+# WhatsApp & Email Support Section (Below Hero)
 st.markdown("### 📞 QuXAT Repository Support")
 whatsapp_url = "https://wa.me/916301237212"
+email_address = "quxat.team@gmail.com"
+
 st.markdown(
     f"""
-    <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
-        <a href="{whatsapp_url}" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="35" alt="WhatsApp">
-        </a>
-        <a href="{whatsapp_url}" target="_blank" style="text-decoration: none; color: inherit; font-size: 1.1em;">
-            Connect with us on WhatsApp: <strong>+91 6301237212</strong>
-        </a>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+        <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
+            <a href="{whatsapp_url}" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="35" alt="WhatsApp">
+            </a>
+            <a href="{whatsapp_url}" target="_blank" style="text-decoration: none; color: inherit; font-size: 1.1em;">
+                Connect with us on WhatsApp: <strong>+91 6301237212</strong>
+            </a>
+        </div>
+        <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
+            <a href="mailto:{email_address}">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg" width="35" alt="Email">
+            </a>
+            <a href="mailto:{email_address}" style="text-decoration: none; color: inherit; font-size: 1.1em;">
+                Email us: <strong>{email_address}</strong>
+            </a>
+        </div>
     </div>
     """,
     unsafe_allow_html=True
