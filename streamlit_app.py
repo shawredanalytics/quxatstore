@@ -615,6 +615,10 @@ elif page == "Admin Upload":
             doc_type = st.selectbox("Select Document Type", ["SOP", "Manual", "Forms", "Registers", "Work Instructions", "Posters", "QSP"])
             
             if uploaded_file is not None:
+                # Check for duplicate file
+                if os.path.exists(os.path.join(UPLOAD_DIR, uploaded_file.name)):
+                    st.warning(f"⚠️ A file named '{uploaded_file.name}' already exists in the repository. Uploading will overwrite it.")
+
                 if st.button("Upload Document"):
                     file_path = save_file(uploaded_file)
                     if file_path:
