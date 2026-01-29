@@ -506,7 +506,7 @@ if page == "Document Search":
     # Process Local Files
     local_file_entries = []
     for f in local_files:
-        f["Source"] = "Local Repository"
+        f["Source"] = "QuXAT Repository"
         f["URL"] = "" 
         local_file_entries.append(f)
         
@@ -643,7 +643,7 @@ elif page == "Admin Upload":
                         st.error("Failed to save file locally.")
                         
             st.markdown("---")
-            st.subheader("Current Local Repository Content")
+            st.subheader("Current QuXAT Repository Content")
             files = get_files()
             
             if files:
