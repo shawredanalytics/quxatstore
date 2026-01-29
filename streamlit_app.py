@@ -426,7 +426,7 @@ Team QuXAT"""
     st.markdown("---")
     
     # Support
-    st.markdown("### QuXAT Healthcare Quality Systems Documents Repository Support")
+    st.markdown("### QuXAT Repository Support")
     st.markdown("Need help? Connect with our support team!")
     
     whatsapp_url = "https://wa.me/916301237212"
@@ -459,7 +459,7 @@ st.subheader("Repository for Healthcare Quality & Compliance Documentation")
 st.markdown("<p style='text-align: center;'>Access essential resources for NABL, NABH, ISO, and other healthcare accreditation standards.</p>", unsafe_allow_html=True)
 
 # WhatsApp Support Section (Below Hero)
-st.markdown("### 📞 QuXAT Healthcare Quality Systems Documents Repository Support")
+st.markdown("### 📞 QuXAT Repository Support")
 whatsapp_url = "https://wa.me/916301237212"
 st.markdown(
     f"""
