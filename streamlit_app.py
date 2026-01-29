@@ -612,7 +612,7 @@ elif page == "Admin Upload":
             st.subheader("Upload Local Document")
 
             uploaded_file = st.file_uploader("Choose a file", accept_multiple_files=False)
-            doc_type = st.selectbox("Select Document Type", ["SOP", "Manual", "Forms", "Registers", "Work Instructions", "Posters"])
+            doc_type = st.selectbox("Select Document Type", ["SOP", "Manual", "Forms", "Registers", "Work Instructions", "Posters", "QSP"])
             
             if uploaded_file is not None:
                 if st.button("Upload Document"):
@@ -707,7 +707,7 @@ elif page == "Admin Upload":
                 with st.form("drive_link_form"):
                     new_name = st.text_input("Document Name", value=name_val)
                     new_url = st.text_input("Google Drive URL", value=url_val)
-                    new_type = st.selectbox("Document Type", ["SOP", "Manual", "Forms", "Registers", "Work Instructions", "Posters"], index=["SOP", "Manual", "Forms", "Registers", "Work Instructions", "Posters"].index(type_val) if type_val in ["SOP", "Manual", "Forms", "Registers", "Work Instructions", "Posters"] else 0)
+                    new_type = st.selectbox("Document Type", ["SOP", "Manual", "Forms", "Registers", "Work Instructions", "Posters", "QSP"], index=["SOP", "Manual", "Forms", "Registers", "Work Instructions", "Posters", "QSP"].index(type_val) if type_val in ["SOP", "Manual", "Forms", "Registers", "Work Instructions", "Posters", "QSP"] else 0)
                     
                     submitted = st.form_submit_button("Save Link")
                     
