@@ -367,7 +367,7 @@ with st.sidebar:
     st.markdown("### About QuXAT")
     st.info(
         "QuXAT Healthcare Repository is a secure, centralized digital platform designed to help healthcare organizations efficiently access quality, safety and related compliance documents. "
-        "The portal helps healthcare organizations to prepare for accreditation and regulatory requirements (such as NABL, NABH, ISO, and other healthcare standards), QuXAT ensures easy access to basic structured documentation with version control. "
+        "The portal helps healthcare organizations to prepare for accreditation and regulatory requirements (such as JCI, NABH, NABL, ISO, and other healthcare standards), QuXAT ensures easy access to basic structured documentation with version control. "
         "Organizations can download resources and modify them as per their internal requirements."
     )
     st.link_button("Visit QuXAT Website", "https://www.quxat.com")
@@ -399,7 +399,7 @@ Greetings from QuXAT.
 
 We are pleased to introduce the QuXAT Healthcare Repository, a secure and centralized digital platform designed to support healthcare organizations in efficiently accessing quality, safety, and compliance-related documentation.
 
-The repository is developed to assist organizations in preparing for accreditation and regulatory requirements, including NABL, NABH, ISO, and other recognized healthcare standards. QuXAT provides basic, structured documentation with version control, ensuring clarity, consistency, and ease of use.
+The repository is developed to assist organizations in preparing for accreditation and regulatory requirements, including JCI, NABH, NABL, ISO, and other recognized healthcare standards. QuXAT provides basic, structured documentation with version control, ensuring clarity, consistency, and ease of use.
 
 Key features of the QuXAT Healthcare Repository:
 * Centralized access to quality and compliance documents
@@ -456,7 +456,7 @@ if logo_path:
 st.title("QuXAT Healthcare Repository")
 st.markdown("<h2 style='text-align: center; color: #2e7d32;'>✅ Free Access for all Healthcare Professionals</h2>", unsafe_allow_html=True)
 st.subheader("Repository for Healthcare Quality & Compliance Documentation")
-st.markdown("<p style='text-align: center;'>Access essential resources for NABL, NABH, ISO, and other healthcare accreditation standards.</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center;'>Access essential resources for JCI, NABH, NABL, ISO and other Healthcare Accreditation Standards.</p>", unsafe_allow_html=True)
 
 # WhatsApp Support Section (Below Hero)
 st.markdown("### 📞 QuXAT Repository Support")
