@@ -684,22 +684,10 @@ if page == "Document Search":
                     "Type",
                     width="small"
                 ),
-                 "Source": st.column_config.TextColumn(
-                    "Source",
-                    width="small"
-                ),
-                "Size (KB)": st.column_config.TextColumn(
-                    "Size (KB)",
-                    width="small"
-                ),
-                 "Upload Date": st.column_config.TextColumn(
-                    "Upload Date",
-                    width="small"
-                ),
             }
 
             # Columns to display
-            display_cols = ["Filename", "Type", "Code", "Source", "Size (KB)", "Upload Date", "URL"]
+            display_cols = ["Filename", "Type", "Code", "URL"]
             
             # Interactive Dataframe
             event = st.dataframe(
