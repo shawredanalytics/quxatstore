@@ -566,7 +566,7 @@ Team QuXAT"""
 if logo_path:
     col1, col2, col3 = st.columns([1, 1, 1])
     with col2:
-        st.image(logo_path, width=350)
+        st.image(logo_path, use_container_width=True)
 st.title("QuXAT Healthcare Repository")
 st.markdown("<h2 style='text-align: center; color: #2e7d32;'>✅ Free Access for all Healthcare Professionals</h2>", unsafe_allow_html=True)
 st.subheader("Repository for Healthcare Quality & Compliance Documentation")
@@ -666,72 +666,68 @@ if page == "Document Search":
             
             # Documents Section
             st.subheader("Available Documents")
+            st.caption("Select a document from the table to preview or download.")
+
+            # Configure columns for responsive table
+            column_config = {
+                "URL": st.column_config.LinkColumn(
+                    "Action",
+                    help="Open Google Drive Link",
+                    display_text="Open 🔗",
+                    width="small"
+                ),
+                "Filename": st.column_config.TextColumn(
+                    "Filename",
+                    width="medium"
+                ),
+                "Type": st.column_config.TextColumn(
+                    "Type",
+                    width="small"
+                ),
+                 "Source": st.column_config.TextColumn(
+                    "Source",
+                    width="small"
+                ),
+                "Size (KB)": st.column_config.TextColumn(
+                    "Size (KB)",
+                    width="small"
+                ),
+                 "Upload Date": st.column_config.TextColumn(
+                    "Upload Date",
+                    width="small"
+                ),
+            }
+
+            # Columns to display
+            display_cols = ["Filename", "Type", "Code", "Source", "Size (KB)", "Upload Date", "URL"]
             
-            # Custom Table with Preview Buttons
+            # Interactive Dataframe
+            event = st.dataframe(
+                df_display[display_cols],
+                column_config=column_config,
+                use_container_width=True,
+                hide_index=False,
+                on_select="rerun",
+                selection_mode="single-row"
+            )
             
-            # Header
-            cols = st.columns([0.8, 3, 1.5, 2, 2, 1, 1.5, 1.5])
-            headers = ["S.No.", "Filename", "Type", "Code", "Source", "Size (KB)", "Upload Date", "Action"]
-            
-            # Header Styling
-            for col, header in zip(cols, headers):
-                col.markdown(
-                    f"""
-                    <div style="
-                        background-color: #e0f2f1;
-                        padding: 5px 2px;
-                        border-radius: 5px;
-                        font-weight: bold;
-                        color: #004d40;
-                        text-align: center;
-                        border-bottom: 2px solid #00796b;
-                        font-size: 14px;
-                        white-space: nowrap;
-                    ">
-                        {header}
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
-            
-            # Rows
-            for index, row in df_display.iterrows():
-                # Divider
-                st.markdown("<hr style='margin: 2px 0; border: 0; border-top: 1px solid #e0e0e0;'>", unsafe_allow_html=True)
+            # Handle Selection
+            if len(event.selection.rows) > 0:
+                selected_index = event.selection.rows[0]
+                row = df_display.iloc[selected_index]
                 
-                cols = st.columns([0.8, 3, 1.5, 2, 2, 1, 1.5, 1.5])
+                st.markdown("### Selected Document Action")
                 
-                # Vertical alignment helper style (applied globally in CSS, but ensuring here via markdown if needed)
-                # For now, relying on global vertical alignment is tricky in Streamlit. 
-                # We'll just output the content.
+                col_info, col_btn = st.columns([3, 1])
                 
-                # Serial Number
-                cols[0].markdown(f"<div style='text-align: center; padding-top: 5px; font-size: 14px;'>{index}</div>", unsafe_allow_html=True)
+                with col_info:
+                    st.info(f"Selected: **{row['Filename']}** ({row['Source']})")
                 
-                # Filename
-                cols[1].markdown(f"<div style='padding-top: 5px; font-size: 14px;'>{row['Filename']}</div>", unsafe_allow_html=True)
-                
-                # Type
-                cols[2].markdown(f"<div style='text-align: center; padding-top: 5px; font-size: 14px;'>{row['Type']}</div>", unsafe_allow_html=True)
-                
-                # Code
-                cols[3].markdown(f"<div style='text-align: center; padding-top: 5px; font-size: 14px;'>{row['Code']}</div>", unsafe_allow_html=True)
-                
-                # Source
-                cols[4].markdown(f"<div style='text-align: center; padding-top: 5px; font-size: 14px;'>{row['Source']}</div>", unsafe_allow_html=True)
-                
-                # Size
-                cols[5].markdown(f"<div style='text-align: center; padding-top: 5px; font-size: 14px;'>{row['Size (KB)']}</div>", unsafe_allow_html=True)
-                
-                # Date
-                cols[6].markdown(f"<div style='text-align: center; padding-top: 5px; font-size: 14px;'>{row['Upload Date']}</div>", unsafe_allow_html=True)
-                
-                # Action Button
-                with cols[7]:
+                with col_btn:
                     if row["Source"] == "Google Drive":
-                         st.link_button("🔗 Open", row["URL"], help=f"Open '{row['Filename']}' in Google Drive")
+                         st.link_button("🔗 Open Link", row["URL"], use_container_width=True)
                     else:
-                        if st.button("👁️ Preview & Download", key=f"preview_{index}_{row['Filename']}"):
+                        if st.button("👁️ Preview / Download", key=f"btn_preview_{selected_index}", use_container_width=True):
                             file_path = os.path.join(UPLOAD_DIR, row["Filename"])
                             preview_document_modal(file_path, row["Filename"])
 
