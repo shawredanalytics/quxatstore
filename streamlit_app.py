@@ -144,7 +144,22 @@ def preview_document_modal(file_path, file_name):
     """
     Displays the document preview in a modal dialog.
     """
-    st.write(f"### {file_name}")
+    col1, col2 = st.columns([3, 1])
+    with col1:
+        st.write(f"### {file_name}")
+    with col2:
+        try:
+            with open(file_path, "rb") as f:
+                file_data = f.read()
+            st.download_button(
+                label="⬇️ Download",
+                data=file_data,
+                file_name=file_name,
+                mime="application/octet-stream",
+                key="modal_download_btn"
+            )
+        except Exception:
+            pass # Ignore if file read fails for download button
     
     file_ext = os.path.splitext(file_name)[1].lower()
     
@@ -562,49 +577,42 @@ if page == "Document Search":
             
             # Documents Section
             st.subheader("Available Documents")
-            # Reorder columns to show Source
-            cols = ["Filename", "Type", "Source", "Size (KB)", "Upload Date"]
-            # Ensure cols exist
-            cols = [c for c in cols if c in df_display.columns]
-            st.dataframe(df_display[cols], use_container_width=True)
+            
+            # Custom Table with Preview Buttons
+            
+            # Header
+            cols = st.columns([3, 1.5, 2, 1, 1.5, 1.5])
+            headers = ["Filename", "Type", "Source", "Size (KB)", "Upload Date", "Action"]
+            for col, header in zip(cols, headers):
+                col.markdown(f"**{header}**")
+            
+            st.markdown("---")
+            
+            # Rows
+            for index, row in df_display.iterrows():
+                cols = st.columns([3, 1.5, 2, 1, 1.5, 1.5])
+                
+                # Filename
+                cols[0].write(row["Filename"])
+                # Type
+                cols[1].write(row["Type"])
+                # Source
+                cols[2].write(row["Source"])
+                # Size
+                cols[3].write(row["Size (KB)"])
+                # Date
+                cols[4].write(row["Upload Date"])
+                
+                # Action Button
+                with cols[5]:
+                    if row["Source"] == "Google Drive":
+                         st.link_button("🔗 Open", row["URL"], help=f"Open '{row['Filename']}' in Google Drive")
+                    else:
+                        if st.button("👁️ Preview", key=f"preview_{index}_{row['Filename']}"):
+                            file_path = os.path.join(UPLOAD_DIR, row["Filename"])
+                            preview_document_modal(file_path, row["Filename"])
 
             st.markdown("---")
-
-            # Preview & Actions Section
-            st.subheader("Document Actions")
-            selected_file_name = st.selectbox("Select a document to view/download", df["Filename"])
-            
-            if selected_file_name:
-                selected_row = df[df["Filename"] == selected_file_name].iloc[0]
-                
-                col1, col2 = st.columns([1, 1])
-                
-                with col1:
-                    st.info(f"Selected: **{selected_file_name}** ({selected_row['Source']})")
-
-                with col2:
-                    if selected_row["Source"] == "Google Drive":
-                         st.link_button(f"🔗 Open in Google Drive", selected_row["URL"])
-                    else:
-                        # Local File Logic
-                        file_path = os.path.join(UPLOAD_DIR, selected_file_name)
-                        
-                        if os.path.exists(file_path):
-                            # Download Button
-                            with open(file_path, "rb") as f:
-                                file_data = f.read()
-                                st.download_button(
-                                    label=f"⬇️ Download File",
-                                    data=file_data,
-                                    file_name=selected_file_name,
-                                    mime="application/octet-stream",
-                                )
-                            
-                            # Preview Link
-                            if st.button("📄 Preview Document", key="preview_btn"):
-                                preview_document_modal(file_path, selected_file_name)
-                        else:
-                            st.error("File not found locally.")
         else:
             st.info("No documents found matching your search.")
 
