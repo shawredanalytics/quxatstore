@@ -670,15 +670,9 @@ if page == "Document Search":
 
             # Configure columns for responsive table
             column_config = {
-                "URL": st.column_config.LinkColumn(
-                    "Action",
-                    help="Open Google Drive Link",
-                    display_text="Open 🔗",
-                    width="small"
-                ),
                 "Filename": st.column_config.TextColumn(
                     "Filename",
-                    width="medium"
+                    width="large"
                 ),
                 "Type": st.column_config.TextColumn(
                     "Type",
@@ -687,7 +681,7 @@ if page == "Document Search":
             }
 
             # Columns to display
-            display_cols = ["Filename", "Type", "Code", "URL"]
+            display_cols = ["Filename", "Type", "Code"]
             
             # Interactive Dataframe
             event = st.dataframe(
