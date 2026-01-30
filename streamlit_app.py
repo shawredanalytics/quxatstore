@@ -679,12 +679,13 @@ if page == "Document Search":
                     f"""
                     <div style="
                         background-color: #e0f2f1;
-                        padding: 10px 5px;
+                        padding: 5px 2px;
                         border-radius: 5px;
                         font-weight: bold;
                         color: #004d40;
                         text-align: center;
                         border-bottom: 2px solid #00796b;
+                        font-size: 14px;
                     ">
                         {header}
                     </div>
@@ -704,25 +705,25 @@ if page == "Document Search":
                 # We'll just output the content.
                 
                 # Serial Number
-                cols[0].markdown(f"<div style='text-align: center; padding-top: 10px;'>{index}</div>", unsafe_allow_html=True)
+                cols[0].markdown(f"<div style='text-align: center; padding-top: 5px; font-size: 14px;'>{index}</div>", unsafe_allow_html=True)
                 
                 # Filename
-                cols[1].markdown(f"<div style='padding-top: 10px;'>{row['Filename']}</div>", unsafe_allow_html=True)
+                cols[1].markdown(f"<div style='padding-top: 5px; font-size: 14px;'>{row['Filename']}</div>", unsafe_allow_html=True)
                 
                 # Type
-                cols[2].markdown(f"<div style='text-align: center; padding-top: 10px;'>{row['Type']}</div>", unsafe_allow_html=True)
+                cols[2].markdown(f"<div style='text-align: center; padding-top: 5px; font-size: 14px;'>{row['Type']}</div>", unsafe_allow_html=True)
                 
                 # Code
-                cols[3].markdown(f"<div style='text-align: center; padding-top: 10px;'>{row['Code']}</div>", unsafe_allow_html=True)
+                cols[3].markdown(f"<div style='text-align: center; padding-top: 5px; font-size: 14px;'>{row['Code']}</div>", unsafe_allow_html=True)
                 
                 # Source
-                cols[4].markdown(f"<div style='text-align: center; padding-top: 10px;'>{row['Source']}</div>", unsafe_allow_html=True)
+                cols[4].markdown(f"<div style='text-align: center; padding-top: 5px; font-size: 14px;'>{row['Source']}</div>", unsafe_allow_html=True)
                 
                 # Size
-                cols[5].markdown(f"<div style='text-align: center; padding-top: 10px;'>{row['Size (KB)']}</div>", unsafe_allow_html=True)
+                cols[5].markdown(f"<div style='text-align: center; padding-top: 5px; font-size: 14px;'>{row['Size (KB)']}</div>", unsafe_allow_html=True)
                 
                 # Date
-                cols[6].markdown(f"<div style='text-align: center; padding-top: 10px;'>{row['Upload Date']}</div>", unsafe_allow_html=True)
+                cols[6].markdown(f"<div style='text-align: center; padding-top: 5px; font-size: 14px;'>{row['Upload Date']}</div>", unsafe_allow_html=True)
                 
                 # Action Button
                 with cols[7]:
