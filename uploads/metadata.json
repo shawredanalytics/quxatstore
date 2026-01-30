@@ -1,76 +1,298 @@
 {
-    "QUXAT. SOP. 2. Use of Personal Protective Equipment. Issue 1.pdf": "SOP",
-    "QUXAT. SOP. 3. Biomedical Waste Management. Issue 1.pdf": "SOP",
-    "QUXAT. SOP. 5. Lab Humidity and Temperature Monitoring. Issue 1.pdf": "SOP",
-    "QUXAT. SOP. 6. Equipment Installation and Maintenance. Issue 1.pdf": "SOP",
-    "QUXAT. SOP. 7. Emergency Testing and Results. Issue 1.pdf": "SOP",
-    "QUXAT. SOP. 8. Spill Management. Issue 1.pdf": "SOP",
-    "QUXAT. SOP. 12. Employee Safety. Issue 1.pdf": "SOP",
-    "QUXAT. SOP. 43. Method Validation & Verification. Issue 1.pdf": "SOP",
-    "QUXAT. SOP. 45. Outsourced Test Reporting. Issue 1.pdf": "SOP",
-    "QUXAT. SOP. 13. Fire Exit & Safety Plan.pdf": "SOP",
-    "QuXAT. SOP. 13. Fire Safety Guidlines.pdf": "SOP",
-    "QUXAT. SOP. 22. Infection Control Procedures.pdf": "SOP",
-    "QUXAT. SOP. 27. Hospital Disciplinary Process.pdf": "SOP",
-    "QUXAT. SOP. 27. Human Resources & Disciplinary Handling Process.pdf": "SOP",
-    "QUXAT. SOP. 35. Medico Legal Cases (MLC).pdf": "SOP",
-    "QUXAT. SOP. 37. Procurement and Usage of Implantable Prosthesis.pdf": "SOP",
-    "QUXAT. SOP. 41. Management of Medical Records.pdf": "SOP",
-    "QUXAT. SOP. 49. Prescription of Medications.pdf": "SOP",
-    "QUXAT. SOP. 54. Ethics and Patient Confidentiality.pdf": "SOP",
-    "QuXAT. SOP. 70. Code Red - Fire Safety Mock Drill.pdf": "SOP",
-    "QUXAT. SOP. 73. Preventive and Breakdown Maintenance.pdf": "SOP",
-    "QUXAT. SOP. 77. Anesthesia & Surgical Safety Guidelines.pdf": "SOP",
-    "QUXAT. SOP. 86. Visakha Committee. 17082023.pdf": "SOP",
-    "QUXAT. SOP. 46. Retained Sample Testing. Issue 1.pdf": "SOP",
-    "QUXAT. SOP. 36. Linearity Testing & Calibration Verification. Issue 1.pdf": "SOP",
-    "QUXAT. SOP. 30. LOT Verification. Issue 1.pdf": "SOP",
-    "QuXAT. SOP. 17. Internal Quality Control - Biochemistry.pdf": "SOP",
-    "QUXAT. SOP. 14. Supplier Evaluation. Issue 1.pdf": "SOP",
-    "QUXAT. SOP. 10. Sample Rejection. Issue 1.pdf": "SOP",
-    "QUXAT. SOP. 9. Critical Alert Reporting. Issue 1.pdf": "SOP",
-    "QUXAT. SOP. 42. Preparation of Sodium Hypochlorite Solution. Issue 1.pdf": "SOP",
-    "QUXAT. SOP. 41. Sample Integrity. Issue 1.pdf": "SOP",
-    "QUXAT. SOP. 40. Referral Laboratory Reporting. Issue 1.pdf": "SOP",
-    "QUXAT. SOP. 39. Resolution of Patient Complaints. Issue 1.pdf": "SOP",
-    "QUXAT. SOP. 38. Discard Autoclave - Validation. Issue 1.pdf": "SOP",
-    "QUXAT. SOP. 37. Laboratory Water Quality. Issue 1.pdf": "SOP",
-    "QUXAT. SOP. 35. Sample Storage and Retention. Issue 1.pdf": "SOP",
-    "QUXAT. SOP. 34. Centrifuge Work Procedure. Issue 1.pdf": "SOP",
-    "QUXAT. SOP. 33. Fumigation.pdf": "SOP",
-    "QUXAT. SOP. 32. Power Supply Contingency. Issue 1.pdf": "SOP",
-    "QUXAT. SOP. 31. LIS Contingency Plan. Issue 1.pdf": "SOP",
-    "QUXAT. SOP. 29. Needle Stick Injury. Issue 1.pdf": "SOP",
-    "QUXAT. SOP. 27. Lab Quality Indicators. Issue 1.pdf": "SOP",
-    "QUXAT. SOP. 15. LIS Validation & Verification. Issue 1.pdf": "SOP",
-    "QUXAT. RF. 1. Sample Collection Register. Issue 1.pdf": "Registers",
-    "QUXAT.RF. 02. Sample Rejection Register.pdf": "Registers",
-    "QUXAT. F. 73. Laboratory Employee Ethics & Confidentiality Form.pdf": "Forms",
-    "QUXAT. F. 75. Equipment Acceptance Form. Issue 1. 19112022.pdf": "Forms",
-    "QUXAT. RF. 3. Sample Discard Register. Issue 1.pdf": "Registers",
-    "QUXAT. RF. 4. Sample Receiving Register. Issue 1.pdf": "Registers",
-    "QUXAT. RF. 5. Sample Storage Register. Issue 1.pdf": "Registers",
-    "QUXAT. RF. 6. EQAS ILC Schedule - Register. Issue 1.pdf": "Registers",
-    "QUXAT. RF. 79. Risk Mitigation Register. Issue 1.pdf": "Registers",
-    "QUXAT. RF. 78. Continual Improvement Register. Issue 1.pdf": "Registers",
-    "QUXAT. RF. 77. Accident Register. Issue 1.pdf": "Registers",
-    "QUXAT. RF. 69. Daily Non Conformity Register. Issue 1.pdf": "Registers",
-    "QUXAT. RF. 68. Sample Integrity Register. Issue 1.pdf": "Registers",
-    "QUXAT. RF. 67. Discard Autoclave - Validation Register. Issue 1.pdf": "Registers",
-    "QUXAT. HR F. 56. Employee Personal File Checklist Form.pdf": "Forms",
-    "QUXAT. HR. F. 03. Performance Appraisal Form.pdf": "Forms",
-    "QUXAT. HR. F. 13. Staff Training Schedule Form.pdf": "Forms",
-    "QUXAT. HR. F. 37. Hepatitis B Vaccination Form.pdf": "Forms",
-    "QUXAT. HR. F. 54. Staff Interview Form.pdf": "Forms",
-    "QUXAT. HR. F. 55. Employee Annual Health Check Form.pdf": "Forms",
-    "QUXAT. HR. F. 81. Pre-Employment Health Check Form.pdf": "Forms",
-    "QUXAT. HR. F. 91. Appointment Letter Form.pdf": "Forms",
-    "QUXAT. F. 108. COVID - Home Isolation - Monitoring Form.pdf": "Forms",
-    "QUXAT. F. 109. Hospital Oxygen Stock - Monitoring Form.pdf": "Forms",
-    "QUXAT. F. 111. Equipment Maitnenance Log Form.pdf": "Forms",
-    "QUXAT. F. 112. Basic Medical Laboratory - Responsibility Matrix.pdf": "Forms",
-    "QUXAT. F. 114. Laboratory Test Report Amendment Form.pdf": "Forms",
-    "QUXAT. F. 115. Laboratory Management Review Meeting.pdf": "Forms",
-    "QUXAT. F. 116. COVID - RT PCR Lab - Sample Tracking Form.pdf": "Forms",
-    "QUXAT. F. 120. Daily Laboratory Safety Inspection Form_27042022.pdf": "Forms"
+    "QUXAT. SOP. 2. Use of Personal Protective Equipment. Issue 1.pdf": {
+        "type": "SOP",
+        "code": "QUXATNO743S"
+    },
+    "QUXAT. SOP. 3. Biomedical Waste Management. Issue 1.pdf": {
+        "type": "SOP",
+        "code": "QUXATQER5TP"
+    },
+    "QUXAT. SOP. 5. Lab Humidity and Temperature Monitoring. Issue 1.pdf": {
+        "type": "SOP",
+        "code": "QUXATKWMXN3"
+    },
+    "QUXAT. SOP. 6. Equipment Installation and Maintenance. Issue 1.pdf": {
+        "type": "SOP",
+        "code": "QUXATB2BWV2"
+    },
+    "QUXAT. SOP. 7. Emergency Testing and Results. Issue 1.pdf": {
+        "type": "SOP",
+        "code": "QUXATCZKYFM"
+    },
+    "QUXAT. SOP. 8. Spill Management. Issue 1.pdf": {
+        "type": "SOP",
+        "code": "QUXATUIM6OI"
+    },
+    "QUXAT. SOP. 12. Employee Safety. Issue 1.pdf": {
+        "type": "SOP",
+        "code": "QUXAT1XFL9B"
+    },
+    "QUXAT. SOP. 43. Method Validation & Verification. Issue 1.pdf": {
+        "type": "SOP",
+        "code": "QUXATDRLSCU"
+    },
+    "QUXAT. SOP. 45. Outsourced Test Reporting. Issue 1.pdf": {
+        "type": "SOP",
+        "code": "QUXATD3IAFC"
+    },
+    "QUXAT. SOP. 13. Fire Exit & Safety Plan.pdf": {
+        "type": "SOP",
+        "code": "QUXAT9TS3JA"
+    },
+    "QuXAT. SOP. 13. Fire Safety Guidlines.pdf": {
+        "type": "SOP",
+        "code": "QUXAT8OC5MQ"
+    },
+    "QUXAT. SOP. 22. Infection Control Procedures.pdf": {
+        "type": "SOP",
+        "code": "QUXATQADJ6H"
+    },
+    "QUXAT. SOP. 27. Hospital Disciplinary Process.pdf": {
+        "type": "SOP",
+        "code": "QUXATQ0ER1H"
+    },
+    "QUXAT. SOP. 27. Human Resources & Disciplinary Handling Process.pdf": {
+        "type": "SOP",
+        "code": "QUXAT76TL8A"
+    },
+    "QUXAT. SOP. 35. Medico Legal Cases (MLC).pdf": {
+        "type": "SOP",
+        "code": "QUXAT7WZS1I"
+    },
+    "QUXAT. SOP. 37. Procurement and Usage of Implantable Prosthesis.pdf": {
+        "type": "SOP",
+        "code": "QUXATV02DWF"
+    },
+    "QUXAT. SOP. 41. Management of Medical Records.pdf": {
+        "type": "SOP",
+        "code": "QUXATY8VTZZ"
+    },
+    "QUXAT. SOP. 49. Prescription of Medications.pdf": {
+        "type": "SOP",
+        "code": "QUXAT7WGZCW"
+    },
+    "QUXAT. SOP. 54. Ethics and Patient Confidentiality.pdf": {
+        "type": "SOP",
+        "code": "QUXATP88R9G"
+    },
+    "QuXAT. SOP. 70. Code Red - Fire Safety Mock Drill.pdf": {
+        "type": "SOP",
+        "code": "QUXAT4IZL5V"
+    },
+    "QUXAT. SOP. 73. Preventive and Breakdown Maintenance.pdf": {
+        "type": "SOP",
+        "code": "QUXATK6287B"
+    },
+    "QUXAT. SOP. 77. Anesthesia & Surgical Safety Guidelines.pdf": {
+        "type": "SOP",
+        "code": "QUXATJN3JDS"
+    },
+    "QUXAT. SOP. 86. Visakha Committee. 17082023.pdf": {
+        "type": "SOP",
+        "code": "QUXAT30FQ87"
+    },
+    "QUXAT. SOP. 46. Retained Sample Testing. Issue 1.pdf": {
+        "type": "SOP",
+        "code": "QUXAT5JEWZQ"
+    },
+    "QUXAT. SOP. 36. Linearity Testing & Calibration Verification. Issue 1.pdf": {
+        "type": "SOP",
+        "code": "QUXATZFU36W"
+    },
+    "QUXAT. SOP. 30. LOT Verification. Issue 1.pdf": {
+        "type": "SOP",
+        "code": "QUXATK9H5MB"
+    },
+    "QuXAT. SOP. 17. Internal Quality Control - Biochemistry.pdf": {
+        "type": "SOP",
+        "code": "QUXAT8N4JMO"
+    },
+    "QUXAT. SOP. 14. Supplier Evaluation. Issue 1.pdf": {
+        "type": "SOP",
+        "code": "QUXATMMFSVU"
+    },
+    "QUXAT. SOP. 10. Sample Rejection. Issue 1.pdf": {
+        "type": "SOP",
+        "code": "QUXAT5J675Q"
+    },
+    "QUXAT. SOP. 9. Critical Alert Reporting. Issue 1.pdf": {
+        "type": "SOP",
+        "code": "QUXATW1TTGP"
+    },
+    "QUXAT. SOP. 42. Preparation of Sodium Hypochlorite Solution. Issue 1.pdf": {
+        "type": "SOP",
+        "code": "QUXATAPAF0M"
+    },
+    "QUXAT. SOP. 41. Sample Integrity. Issue 1.pdf": {
+        "type": "SOP",
+        "code": "QUXAT8A8IUI"
+    },
+    "QUXAT. SOP. 40. Referral Laboratory Reporting. Issue 1.pdf": {
+        "type": "SOP",
+        "code": "QUXATY0Y70G"
+    },
+    "QUXAT. SOP. 39. Resolution of Patient Complaints. Issue 1.pdf": {
+        "type": "SOP",
+        "code": "QUXATVXXOTG"
+    },
+    "QUXAT. SOP. 38. Discard Autoclave - Validation. Issue 1.pdf": {
+        "type": "SOP",
+        "code": "QUXATPZY9SC"
+    },
+    "QUXAT. SOP. 37. Laboratory Water Quality. Issue 1.pdf": {
+        "type": "SOP",
+        "code": "QUXAT1YI1YO"
+    },
+    "QUXAT. SOP. 35. Sample Storage and Retention. Issue 1.pdf": {
+        "type": "SOP",
+        "code": "QUXATHJR3WF"
+    },
+    "QUXAT. SOP. 34. Centrifuge Work Procedure. Issue 1.pdf": {
+        "type": "SOP",
+        "code": "QUXATUDSRN6"
+    },
+    "QUXAT. SOP. 33. Fumigation.pdf": {
+        "type": "SOP",
+        "code": "QUXAT7J4X8Q"
+    },
+    "QUXAT. SOP. 32. Power Supply Contingency. Issue 1.pdf": {
+        "type": "SOP",
+        "code": "QUXATLGHGO8"
+    },
+    "QUXAT. SOP. 31. LIS Contingency Plan. Issue 1.pdf": {
+        "type": "SOP",
+        "code": "QUXATIQV9L4"
+    },
+    "QUXAT. SOP. 29. Needle Stick Injury. Issue 1.pdf": {
+        "type": "SOP",
+        "code": "QUXAT3RXERI"
+    },
+    "QUXAT. SOP. 27. Lab Quality Indicators. Issue 1.pdf": {
+        "type": "SOP",
+        "code": "QUXAT8Q050X"
+    },
+    "QUXAT. SOP. 15. LIS Validation & Verification. Issue 1.pdf": {
+        "type": "SOP",
+        "code": "QUXATTW0H4D"
+    },
+    "QUXAT. RF. 1. Sample Collection Register. Issue 1.pdf": {
+        "type": "Registers",
+        "code": "QUXAT9YJFTC"
+    },
+    "QUXAT.RF. 02. Sample Rejection Register.pdf": {
+        "type": "Registers",
+        "code": "QUXAT2GE74M"
+    },
+    "QUXAT. F. 73. Laboratory Employee Ethics & Confidentiality Form.pdf": {
+        "type": "Forms",
+        "code": "QUXATE2DNAP"
+    },
+    "QUXAT. F. 75. Equipment Acceptance Form. Issue 1. 19112022.pdf": {
+        "type": "Forms",
+        "code": "QUXATI00BDK"
+    },
+    "QUXAT. RF. 3. Sample Discard Register. Issue 1.pdf": {
+        "type": "Registers",
+        "code": "QUXATGMS821"
+    },
+    "QUXAT. RF. 4. Sample Receiving Register. Issue 1.pdf": {
+        "type": "Registers",
+        "code": "QUXAT9J2HYE"
+    },
+    "QUXAT. RF. 5. Sample Storage Register. Issue 1.pdf": {
+        "type": "Registers",
+        "code": "QUXAT2S0614"
+    },
+    "QUXAT. RF. 6. EQAS ILC Schedule - Register. Issue 1.pdf": {
+        "type": "Registers",
+        "code": "QUXATMTPQU9"
+    },
+    "QUXAT. RF. 79. Risk Mitigation Register. Issue 1.pdf": {
+        "type": "Registers",
+        "code": "QUXATUIRARE"
+    },
+    "QUXAT. RF. 78. Continual Improvement Register. Issue 1.pdf": {
+        "type": "Registers",
+        "code": "QUXATEWW5QR"
+    },
+    "QUXAT. RF. 77. Accident Register. Issue 1.pdf": {
+        "type": "Registers",
+        "code": "QUXATYIMV1Q"
+    },
+    "QUXAT. RF. 69. Daily Non Conformity Register. Issue 1.pdf": {
+        "type": "Registers",
+        "code": "QUXATLDY1GM"
+    },
+    "QUXAT. RF. 68. Sample Integrity Register. Issue 1.pdf": {
+        "type": "Registers",
+        "code": "QUXAT1JAL0T"
+    },
+    "QUXAT. RF. 67. Discard Autoclave - Validation Register. Issue 1.pdf": {
+        "type": "Registers",
+        "code": "QUXATQV7YRY"
+    },
+    "QUXAT. HR F. 56. Employee Personal File Checklist Form.pdf": {
+        "type": "Forms",
+        "code": "QUXATHMEM35"
+    },
+    "QUXAT. HR. F. 03. Performance Appraisal Form.pdf": {
+        "type": "Forms",
+        "code": "QUXAT89Z4DS"
+    },
+    "QUXAT. HR. F. 13. Staff Training Schedule Form.pdf": {
+        "type": "Forms",
+        "code": "QUXATE45ETV"
+    },
+    "QUXAT. HR. F. 37. Hepatitis B Vaccination Form.pdf": {
+        "type": "Forms",
+        "code": "QUXATA06KBE"
+    },
+    "QUXAT. HR. F. 54. Staff Interview Form.pdf": {
+        "type": "Forms",
+        "code": "QUXATTH1C3P"
+    },
+    "QUXAT. HR. F. 55. Employee Annual Health Check Form.pdf": {
+        "type": "Forms",
+        "code": "QUXAT6ZXD3Q"
+    },
+    "QUXAT. HR. F. 81. Pre-Employment Health Check Form.pdf": {
+        "type": "Forms",
+        "code": "QUXATT2G9C9"
+    },
+    "QUXAT. HR. F. 91. Appointment Letter Form.pdf": {
+        "type": "Forms",
+        "code": "QUXATZFERDM"
+    },
+    "QUXAT. F. 108. COVID - Home Isolation - Monitoring Form.pdf": {
+        "type": "Forms",
+        "code": "QUXAT57NJJD"
+    },
+    "QUXAT. F. 109. Hospital Oxygen Stock - Monitoring Form.pdf": {
+        "type": "Forms",
+        "code": "QUXATHH748M"
+    },
+    "QUXAT. F. 111. Equipment Maitnenance Log Form.pdf": {
+        "type": "Forms",
+        "code": "QUXAT1ZNMYV"
+    },
+    "QUXAT. F. 112. Basic Medical Laboratory - Responsibility Matrix.pdf": {
+        "type": "Forms",
+        "code": "QUXAT93FVKG"
+    },
+    "QUXAT. F. 114. Laboratory Test Report Amendment Form.pdf": {
+        "type": "Forms",
+        "code": "QUXATT6OVIT"
+    },
+    "QUXAT. F. 115. Laboratory Management Review Meeting.pdf": {
+        "type": "Forms",
+        "code": "QUXATF3X8OS"
+    },
+    "QUXAT. F. 116. COVID - RT PCR Lab - Sample Tracking Form.pdf": {
+        "type": "Forms",
+        "code": "QUXAT91U81G"
+    },
+    "QUXAT. F. 120. Daily Laboratory Safety Inspection Form_27042022.pdf": {
+        "type": "Forms",
+        "code": "QUXATNK9RQD"
+    }
 }
