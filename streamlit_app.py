@@ -701,7 +701,7 @@ if page == "Document Search":
                     if row["Source"] == "Google Drive":
                          st.link_button("🔗 Open", row["URL"], help=f"Open '{row['Filename']}' in Google Drive")
                     else:
-                        if st.button("👁️ Preview", key=f"preview_{index}_{row['Filename']}"):
+                        if st.button("👁️ Preview & Download", key=f"preview_{index}_{row['Filename']}"):
                             file_path = os.path.join(UPLOAD_DIR, row["Filename"])
                             preview_document_modal(file_path, row["Filename"])
 
