@@ -670,8 +670,8 @@ if page == "Document Search":
             # Custom Table with Preview Buttons
             
             # Header
-            cols = st.columns([3, 1.5, 2, 2, 1, 1.5, 1.5])
-            headers = ["Filename", "Type", "Code", "Source", "Size (KB)", "Upload Date", "Action"]
+            cols = st.columns([0.5, 3, 1.5, 2, 2, 1, 1.5, 1.5])
+            headers = ["S.No.", "Filename", "Type", "Code", "Source", "Size (KB)", "Upload Date", "Action"]
             for col, header in zip(cols, headers):
                 col.markdown(f"**{header}**")
             
@@ -679,23 +679,25 @@ if page == "Document Search":
             
             # Rows
             for index, row in df_display.iterrows():
-                cols = st.columns([3, 1.5, 2, 2, 1, 1.5, 1.5])
+                cols = st.columns([0.5, 3, 1.5, 2, 2, 1, 1.5, 1.5])
                 
+                # Serial Number
+                cols[0].write(index)
                 # Filename
-                cols[0].write(row["Filename"])
+                cols[1].write(row["Filename"])
                 # Type
-                cols[1].write(row["Type"])
+                cols[2].write(row["Type"])
                 # Code
-                cols[2].write(row["Code"])
+                cols[3].write(row["Code"])
                 # Source
-                cols[3].write(row["Source"])
+                cols[4].write(row["Source"])
                 # Size
-                cols[4].write(row["Size (KB)"])
+                cols[5].write(row["Size (KB)"])
                 # Date
-                cols[5].write(row["Upload Date"])
+                cols[6].write(row["Upload Date"])
                 
                 # Action Button
-                with cols[6]:
+                with cols[7]:
                     if row["Source"] == "Google Drive":
                          st.link_button("🔗 Open", row["URL"], help=f"Open '{row['Filename']}' in Google Drive")
                     else:
