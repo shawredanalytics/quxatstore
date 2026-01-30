@@ -672,29 +672,57 @@ if page == "Document Search":
             # Header
             cols = st.columns([0.5, 3, 1.5, 2, 2, 1, 1.5, 1.5])
             headers = ["S.No.", "Filename", "Type", "Code", "Source", "Size (KB)", "Upload Date", "Action"]
-            for col, header in zip(cols, headers):
-                col.markdown(f"**{header}**")
             
-            st.markdown("---")
+            # Header Styling
+            for col, header in zip(cols, headers):
+                col.markdown(
+                    f"""
+                    <div style="
+                        background-color: #e0f2f1;
+                        padding: 10px 5px;
+                        border-radius: 5px;
+                        font-weight: bold;
+                        color: #004d40;
+                        text-align: center;
+                        border-bottom: 2px solid #00796b;
+                    ">
+                        {header}
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
             
             # Rows
             for index, row in df_display.iterrows():
+                # Divider
+                st.markdown("<hr style='margin: 2px 0; border: 0; border-top: 1px solid #e0e0e0;'>", unsafe_allow_html=True)
+                
                 cols = st.columns([0.5, 3, 1.5, 2, 2, 1, 1.5, 1.5])
                 
+                # Vertical alignment helper style (applied globally in CSS, but ensuring here via markdown if needed)
+                # For now, relying on global vertical alignment is tricky in Streamlit. 
+                # We'll just output the content.
+                
                 # Serial Number
-                cols[0].write(index)
+                cols[0].markdown(f"<div style='text-align: center; padding-top: 10px;'>{index}</div>", unsafe_allow_html=True)
+                
                 # Filename
-                cols[1].write(row["Filename"])
+                cols[1].markdown(f"<div style='padding-top: 10px;'>{row['Filename']}</div>", unsafe_allow_html=True)
+                
                 # Type
-                cols[2].write(row["Type"])
+                cols[2].markdown(f"<div style='text-align: center; padding-top: 10px;'>{row['Type']}</div>", unsafe_allow_html=True)
+                
                 # Code
-                cols[3].write(row["Code"])
+                cols[3].markdown(f"<div style='text-align: center; padding-top: 10px;'>{row['Code']}</div>", unsafe_allow_html=True)
+                
                 # Source
-                cols[4].write(row["Source"])
+                cols[4].markdown(f"<div style='text-align: center; padding-top: 10px;'>{row['Source']}</div>", unsafe_allow_html=True)
+                
                 # Size
-                cols[5].write(row["Size (KB)"])
+                cols[5].markdown(f"<div style='text-align: center; padding-top: 10px;'>{row['Size (KB)']}</div>", unsafe_allow_html=True)
+                
                 # Date
-                cols[6].write(row["Upload Date"])
+                cols[6].markdown(f"<div style='text-align: center; padding-top: 10px;'>{row['Upload Date']}</div>", unsafe_allow_html=True)
                 
                 # Action Button
                 with cols[7]:
@@ -705,7 +733,7 @@ if page == "Document Search":
                             file_path = os.path.join(UPLOAD_DIR, row["Filename"])
                             preview_document_modal(file_path, row["Filename"])
 
-            st.markdown("---")
+            st.markdown("<hr style='margin: 2px 0; border: 0; border-top: 2px solid #00796b;'>", unsafe_allow_html=True)
         else:
             st.info("No documents found matching your search.")
 
