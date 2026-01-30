@@ -6,6 +6,8 @@ import urllib.parse
 from datetime import datetime
 import pandas as pd
 import json
+import random
+import string
 from streamlit_pdf_viewer import pdf_viewer
 from github import Github, GithubException
 
@@ -108,6 +110,12 @@ if not os.path.exists(UPLOAD_DIR):
 METADATA_FILE = os.path.join(UPLOAD_DIR, "metadata.json")
 DRIVE_LINKS_FILE = os.path.join(UPLOAD_DIR, "drive_links.json")
 
+def generate_quxat_code():
+    """Generates a unique code starting with QUXAT followed by 6 alphanumeric characters."""
+    chars = string.ascii_uppercase + string.digits
+    suffix = ''.join(random.choices(chars, k=6))
+    return f"QUXAT{suffix}"
+
 def load_metadata():
     if os.path.exists(METADATA_FILE):
         with open(METADATA_FILE, "r") as f:
@@ -119,7 +127,21 @@ def load_metadata():
 
 def update_metadata(filename, doc_type):
     metadata = load_metadata()
-    metadata[filename] = doc_type
+    # Check if entry exists to preserve code, or create new
+    current_entry = metadata.get(filename)
+    
+    code = generate_quxat_code()
+    if isinstance(current_entry, dict) and "code" in current_entry:
+        code = current_entry["code"]
+    elif isinstance(current_entry, str):
+         # Migration case if hitting this function
+         pass
+         
+    metadata[filename] = {
+        "type": doc_type,
+        "code": code
+    }
+    
     with open(METADATA_FILE, "w") as f:
         json.dump(metadata, f, indent=4)
     return METADATA_FILE
@@ -354,21 +376,87 @@ def sync_from_github():
     except Exception as e:
         print(f"GitHub sync failed: {str(e)}")
 
+def ensure_unique_codes():
+    """
+    Migrates metadata and drive links to ensure every resource has a unique QUXAT code.
+    Syncs back to GitHub if changes are made.
+    """
+    changes_made = False
+    
+    # 1. Local Files Metadata
+    metadata = load_metadata()
+    meta_changed = False
+    
+    for filename in metadata:
+        entry = metadata[filename]
+        if isinstance(entry, str):
+            # Convert old string format to dict
+            metadata[filename] = {
+                "type": entry,
+                "code": generate_quxat_code()
+            }
+            meta_changed = True
+        elif isinstance(entry, dict):
+            if "code" not in entry:
+                entry["code"] = generate_quxat_code()
+                meta_changed = True
+                
+    if meta_changed:
+        with open(METADATA_FILE, "w") as f:
+            json.dump(metadata, f, indent=4)
+        changes_made = True
+        
+    # 2. Drive Links
+    drive_links = load_drive_links()
+    links_changed = False
+    
+    for link in drive_links:
+        if "code" not in link:
+            link["code"] = generate_quxat_code()
+            links_changed = True
+            
+    if links_changed:
+        save_drive_links(drive_links)
+        changes_made = True
+        
+    # 3. Sync back if needed
+    if changes_made:
+        try:
+            print("Migrated data to include QUXAT codes. Syncing to GitHub...")
+            if meta_changed:
+                upload_to_github(METADATA_FILE, "metadata.json")
+            if links_changed:
+                upload_to_github(DRIVE_LINKS_FILE, "drive_links.json")
+        except Exception as e:
+            print(f"Error syncing migration to GitHub: {e}")
+
 # Run sync on startup
 sync_from_github()
+ensure_unique_codes()
 
 def get_files():
     metadata = load_metadata()
     files = []
     if os.path.exists(UPLOAD_DIR):
         for filename in os.listdir(UPLOAD_DIR):
-            if filename not in [".gitkeep", "metadata.json"]:
+            if filename not in [".gitkeep", "metadata.json", "drive_links.json"]:
                 file_path = os.path.join(UPLOAD_DIR, filename)
                 stats = os.stat(file_path)
+                
+                # Handle both old (str) and new (dict) metadata
+                meta_entry = metadata.get(filename, "General")
+                if isinstance(meta_entry, dict):
+                    doc_type = meta_entry.get("type", "General")
+                    code = meta_entry.get("code", "N/A")
+                else:
+                    doc_type = meta_entry
+                    code = "N/A"
+                
                 files.append(
                     {
                         "Filename": filename,
-                        "Type": metadata.get(filename, "General"),
+                        "Type": doc_type,
+                        "Code": code,
                         "Size (KB)": round(stats.st_size / 1024, 2),
                         "Upload Date": datetime.fromtimestamp(stats.st_mtime).strftime("%Y-%m-%d %H:%M:%S"),
                     }
@@ -535,6 +623,7 @@ if page == "Document Search":
         drive_file_entries.append({
             "Filename": link.get("name", "Unknown"),
             "Type": link.get("type", "General"),
+            "Code": link.get("code", "N/A"),
             "Size (KB)": "Link",
             "Upload Date": link.get("added_on", "N/A"),
             "Source": "Google Drive",
@@ -581,8 +670,8 @@ if page == "Document Search":
             # Custom Table with Preview Buttons
             
             # Header
-            cols = st.columns([3, 1.5, 2, 1, 1.5, 1.5])
-            headers = ["Filename", "Type", "Source", "Size (KB)", "Upload Date", "Action"]
+            cols = st.columns([3, 1.5, 2, 2, 1, 1.5, 1.5])
+            headers = ["Filename", "Type", "Code", "Source", "Size (KB)", "Upload Date", "Action"]
             for col, header in zip(cols, headers):
                 col.markdown(f"**{header}**")
             
@@ -590,21 +679,23 @@ if page == "Document Search":
             
             # Rows
             for index, row in df_display.iterrows():
-                cols = st.columns([3, 1.5, 2, 1, 1.5, 1.5])
+                cols = st.columns([3, 1.5, 2, 2, 1, 1.5, 1.5])
                 
                 # Filename
                 cols[0].write(row["Filename"])
                 # Type
                 cols[1].write(row["Type"])
+                # Code
+                cols[2].write(row["Code"])
                 # Source
-                cols[2].write(row["Source"])
+                cols[3].write(row["Source"])
                 # Size
-                cols[3].write(row["Size (KB)"])
+                cols[4].write(row["Size (KB)"])
                 # Date
-                cols[4].write(row["Upload Date"])
+                cols[5].write(row["Upload Date"])
                 
                 # Action Button
-                with cols[5]:
+                with cols[6]:
                     if row["Source"] == "Google Drive":
                          st.link_button("🔗 Open", row["URL"], help=f"Open '{row['Filename']}' in Google Drive")
                     else:
@@ -758,6 +849,7 @@ elif page == "Admin Upload":
                                 "name": new_name,
                                 "url": new_url,
                                 "type": new_type,
+                                "code": generate_quxat_code(),
                                 "added_on": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                             })
                             
