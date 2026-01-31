@@ -662,8 +662,8 @@ if page == "Document Search":
         
         if not df.empty:
             df_display = df.reset_index(drop=True)
-            df_display.index = df_display.index + 1
-            df_display.index.name = "Select"
+            df_display["Sr. No"] = df_display.index + 1
+            df_display["Select"] = False  # Placeholder for selection column
             
             # Documents Section
             st.subheader("Available Documents")
@@ -671,8 +671,13 @@ if page == "Document Search":
 
             # Configure columns for responsive table
             column_config = {
-                "Select": st.column_config.NumberColumn(
+                "Select": st.column_config.CheckboxColumn(
                     "Select",
+                    width="small",
+                    default=False
+                ),
+                "Sr. No": st.column_config.NumberColumn(
+                    "Sr. No",
                     width="small"
                 ),
                 "Filename": st.column_config.TextColumn(
@@ -686,14 +691,14 @@ if page == "Document Search":
             }
 
             # Columns to display
-            display_cols = ["Filename", "Type", "Code"]
+            display_cols = ["Select", "Sr. No", "Filename", "Type", "Code"]
             
             # Interactive Dataframe
             event = st.dataframe(
                 df_display[display_cols],
                 column_config=column_config,
                 use_container_width=True,
-                hide_index=False,
+                hide_index=True,
                 on_select="rerun",
                 selection_mode="single-row"
             )
