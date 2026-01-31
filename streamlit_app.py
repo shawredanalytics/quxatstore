@@ -694,18 +694,21 @@ if page == "Document Search":
             display_cols = ["Select", "Sr. No", "Filename", "Type", "Code"]
             
             # Interactive Dataframe
-            event = st.dataframe(
+            edited_df = st.data_editor(
                 df_display[display_cols],
                 column_config=column_config,
                 use_container_width=True,
                 hide_index=True,
-                on_select="rerun",
-                selection_mode="single-row"
+                disabled=["Sr. No", "Filename", "Type", "Code"],
+                key="doc_selector"
             )
             
             # Handle Selection
-            if len(event.selection.rows) > 0:
-                selected_index = event.selection.rows[0]
+            selected_rows = edited_df[edited_df["Select"] == True]
+            
+            if not selected_rows.empty:
+                # Take the first selected row
+                selected_index = selected_rows.index[0]
                 row = df_display.iloc[selected_index]
                 
                 st.markdown("### Selected Document Action")
