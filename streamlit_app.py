@@ -663,7 +663,13 @@ if page == "Document Search":
         if not df.empty:
             df_display = df.reset_index(drop=True)
             df_display["Sr. No"] = df_display.index + 1
-            df_display["Select"] = False  # Placeholder for selection column
+            
+            # Ensure session state for selection exists
+            if "selected_filename" not in st.session_state:
+                st.session_state.selected_filename = None
+
+            # Apply selection state to the dataframe
+            df_display["Select"] = df_display["Filename"] == st.session_state.selected_filename
             
             # Documents Section
             st.subheader("Available Documents")
@@ -703,28 +709,51 @@ if page == "Document Search":
                 key="doc_selector"
             )
             
-            # Handle Selection
+            # Handle Single Selection Logic
             selected_rows = edited_df[edited_df["Select"] == True]
+            selected_filenames = set(selected_rows["Filename"].tolist())
             
-            if not selected_rows.empty:
-                # Take the first selected row
-                selected_index = selected_rows.index[0]
-                row = df_display.iloc[selected_index]
+            current_state_file = st.session_state.selected_filename
+            
+            # Check if current state file is visible in the current filtered view
+            is_state_file_visible = current_state_file in df_display["Filename"].values
+
+            # Detect changes
+            newly_selected = [f for f in selected_filenames if f != current_state_file]
+            
+            if newly_selected:
+                # User selected a new file -> Update state to this new file (enforce single selection)
+                st.session_state.selected_filename = newly_selected[0]
+                st.rerun()
+            elif is_state_file_visible and current_state_file not in selected_filenames:
+                # User deselected the currently selected file -> Clear state
+                st.session_state.selected_filename = None
+                st.rerun()
+
+            # Display Action for Selected File
+            if st.session_state.selected_filename:
+                # Get the row from the original df (to ensure we have all data including URL/Source)
+                # We use df (not df_display) to be safe, or just find it in df_display
+                row_data = df[df["Filename"] == st.session_state.selected_filename]
                 
-                st.markdown("### Selected Document Action")
-                
-                col_info, col_btn = st.columns([3, 1])
-                
-                with col_info:
-                    st.info(f"Selected: **{row['Filename']}** ({row['Source']})")
-                
-                with col_btn:
-                    if row["Source"] == "Google Drive":
-                         st.link_button("🔗 Open Link", row["URL"], use_container_width=True)
-                    else:
-                        if st.button("👁️ Preview / Download", key=f"btn_preview_{selected_index}", use_container_width=True):
-                            file_path = os.path.join(UPLOAD_DIR, row["Filename"])
-                            preview_document_modal(file_path, row["Filename"])
+                if not row_data.empty:
+                    row = row_data.iloc[0]
+                    
+                    st.markdown("### Selected Document Action")
+                    
+                    col_info, col_btn = st.columns([3, 1])
+                    
+                    with col_info:
+                        st.info(f"Selected: **{row['Filename']}** ({row['Source']})")
+                    
+                    with col_btn:
+                        if row["Source"] == "Google Drive":
+                             st.link_button("🔗 Open Link", row["URL"], use_container_width=True)
+                        else:
+                            # Use a unique key based on filename to avoid conflicts
+                            if st.button("👁️ Preview / Download", key=f"btn_preview_{row['Filename']}", use_container_width=True):
+                                file_path = os.path.join(UPLOAD_DIR, row["Filename"])
+                                preview_document_modal(file_path, row["Filename"])
 
             st.markdown("<hr style='margin: 2px 0; border: 0; border-top: 2px solid #00796b;'>", unsafe_allow_html=True)
         else:
