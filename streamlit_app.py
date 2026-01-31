@@ -663,6 +663,7 @@ if page == "Document Search":
         if not df.empty:
             df_display = df.reset_index(drop=True)
             df_display.index = df_display.index + 1
+            df_display.index.name = "Select"
             
             # Documents Section
             st.subheader("Available Documents")
@@ -670,6 +671,10 @@ if page == "Document Search":
 
             # Configure columns for responsive table
             column_config = {
+                "Select": st.column_config.NumberColumn(
+                    "Select",
+                    width="small"
+                ),
                 "Filename": st.column_config.TextColumn(
                     "Filename",
                     width="large"
