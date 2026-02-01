@@ -302,5 +302,9 @@
     "QUXAT. F. 26. Room Temperature & Humidity Monitoring Sheet.pdf": {
         "type": "Forms",
         "code": "QUXATCI06IA"
+    },
+    "QUXAT. RF. 26. Critical Alert Reporting Register.pdf": {
+        "type": "Registers",
+        "code": "QUXAT3AGWC8"
     }
 }
