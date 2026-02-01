@@ -306,5 +306,9 @@
     "QUXAT. RF. 26. Critical Alert Reporting Register.pdf": {
         "type": "Registers",
         "code": "QUXAT3AGWC8"
+    },
+    "QUXAT. RF. 07. TAT Monitoring Register.pdf": {
+        "type": "Registers",
+        "code": "QUXATCTM142"
     }
 }
