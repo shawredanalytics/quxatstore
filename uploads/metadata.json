@@ -310,5 +310,9 @@
     "QUXAT. RF. 07. TAT Monitoring Register.pdf": {
         "type": "Registers",
         "code": "QUXATCTM142"
+    },
+    "QUXAT. F. 79. OT Air Conditioner - Cleaning Form.pdf": {
+        "type": "Registers",
+        "code": "QUXATI1UI44"
     }
 }
