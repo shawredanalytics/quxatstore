@@ -601,7 +601,15 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.markdown("<p style='text-align: center; font-size: 0.8em; color: grey;'>App Development is done on Trae</p>", unsafe_allow_html=True)
+st.markdown(
+    """
+    <div style="display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 15px;">
+        <span style="font-size: 1.1em; color: #555; font-weight: 500;">App Development is done on Trae</span>
+        <img src="https://github.com/Trae-AI.png?size=50" width="25" style="border-radius: 4px; vertical-align: middle;" alt="Trae Logo">
+    </div>
+    """, 
+    unsafe_allow_html=True
+)
 
 st.markdown("---")
 
