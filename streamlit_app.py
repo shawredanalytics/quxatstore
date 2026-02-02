@@ -572,6 +572,16 @@ st.markdown("<h2 style='text-align: center; color: #2e7d32;'>✅ Free Access for
 st.subheader("Repository for Healthcare Quality & Compliance Documentation")
 st.markdown("<p style='text-align: center;'>Access essential resources for JCI, NABH, NABL, ISO and other Healthcare Accreditation Standards.</p>", unsafe_allow_html=True)
 
+st.markdown(
+    """
+    <div style="display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 10px; margin-bottom: 20px;">
+        <span style="font-size: 1.1em; color: #555; font-weight: 500;">App Development is done on Trae</span>
+        <img src="https://github.com/Trae-AI.png?size=50" width="25" style="border-radius: 4px; vertical-align: middle;" alt="Trae Logo">
+    </div>
+    """, 
+    unsafe_allow_html=True
+)
+
 # WhatsApp & Email Support Section (Below Hero)
 st.markdown("### 📞 QuXAT Repository Support")
 whatsapp_url = "https://wa.me/916301237212"
@@ -598,16 +608,6 @@ st.markdown(
         </div>
     </div>
     """,
-    unsafe_allow_html=True
-)
-
-st.markdown(
-    """
-    <div style="display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 15px;">
-        <span style="font-size: 1.1em; color: #555; font-weight: 500;">App Development is done on Trae</span>
-        <img src="https://github.com/Trae-AI.png?size=50" width="25" style="border-radius: 4px; vertical-align: middle;" alt="Trae Logo">
-    </div>
-    """, 
     unsafe_allow_html=True
 )
 
