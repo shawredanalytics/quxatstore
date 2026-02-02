@@ -574,9 +574,9 @@ st.markdown("<p style='text-align: center;'>Access essential resources for JCI, 
 
 st.markdown(
     """
-    <div style="display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 10px; margin-bottom: 20px;">
-        <span style="font-size: 1.1em; color: #555; font-weight: 500;">App Development is done on Trae</span>
-        <img src="https://github.com/Trae-AI.png?size=50" width="25" style="border-radius: 4px; vertical-align: middle;" alt="Trae Logo">
+    <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 15px; margin-bottom: 25px;">
+        <span style="font-size: 1.4em; color: #444; font-weight: 600;">App Development is done on TRAE AI</span>
+        <img src="https://github.com/Trae-AI.png?size=50" width="30" style="border-radius: 6px; vertical-align: middle;" alt="Trae Logo">
     </div>
     """, 
     unsafe_allow_html=True
