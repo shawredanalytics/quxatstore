@@ -601,6 +601,8 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+st.markdown("<p style='text-align: center; font-size: 0.8em; color: grey;'>App Development is done on Trae</p>", unsafe_allow_html=True)
+
 st.markdown("---")
 
 if page == "Document Search":
