@@ -582,30 +582,35 @@ st.markdown("<h2 style='text-align: center; color: #2e7d32;'>✅ Free Access for
 st.subheader("Repository for Healthcare Quality & Compliance Documentation")
 st.markdown("<p style='text-align: center;'>Access essential resources for JCI, NABH, NABL, ISO and other Healthcare Accreditation Standards.</p>", unsafe_allow_html=True)
 
-# WhatsApp & Email Support Section (Below Hero)
-st.markdown("### 📞 QuXAT Repository Support")
+# Footer Section
 whatsapp_url = "https://wa.me/916301237212"
 email_address = "quxat.team@gmail.com"
 
 st.markdown(
     f"""
-    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-        <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
-            <a href="{whatsapp_url}" target="_blank">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="35" alt="WhatsApp">
-            </a>
-            <a href="{whatsapp_url}" target="_blank" style="text-decoration: none; color: inherit; font-size: 1.1em;">
-                Connect with us on WhatsApp: <strong>+91 6301237212</strong>
-            </a>
+    <div style="text-align: center; margin-top: 30px; margin-bottom: 20px; padding: 20px; background-color: #f9f9f9; border-radius: 10px;">
+        <h3 style="margin-bottom: 10px; color: #333;">QuXAT Repository Support</h3>
+        <p style="margin-bottom: 20px; font-size: 1.1em; color: #555;">Need help? Connect with our support team!</p>
+        
+        <div style="display: flex; justify-content: center; gap: 50px; flex-wrap: wrap;">
+            <div style="text-align: center;">
+                <a href="{whatsapp_url}" target="_blank" style="text-decoration: none; color: inherit;">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="40" alt="WhatsApp" style="margin-bottom: 8px;">
+                    <div style="font-weight: bold; color: #444;">WhatsApp</div>
+                    <div style="color: #2e7d32; font-weight: 600;">+91 6301237212</div>
+                </a>
+            </div>
+            <div style="text-align: center;">
+                <a href="mailto:{email_address}" style="text-decoration: none; color: inherit;">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg" width="40" alt="Email" style="margin-bottom: 8px;">
+                    <div style="font-weight: bold; color: #444;">Email</div>
+                    <div style="color: #d93025; font-weight: 600;">{email_address}</div>
+                </a>
+            </div>
         </div>
-        <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
-            <a href="mailto:{email_address}">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg" width="35" alt="Email">
-            </a>
-            <a href="mailto:{email_address}" style="text-decoration: none; color: inherit; font-size: 1.1em;">
-                Email us: <strong>{email_address}</strong>
-            </a>
-        </div>
+        
+        <hr style="margin-top: 25px; margin-bottom: 15px; opacity: 0.3;">
+        <p style="color: #666; font-size: 0.9em;">© 2025 QuXAT - All Rights Reserved.</p>
     </div>
     """,
     unsafe_allow_html=True
