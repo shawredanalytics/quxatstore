@@ -585,19 +585,19 @@ st.markdown("<p style='text-align: center;'>Access essential resources for JCI, 
 # Footer Section
 st.markdown(
     """
-    <div style="display: flex; justify-content: center; gap: 50px; flex-wrap: wrap;"> 
-         <div style="text-align: center;"> 
-             <a href="https://wa.me/916301237212" target="_blank" style="text-decoration: none; color: inherit;"> 
-                 <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="40" alt="WhatsApp" style="margin-bottom: 8px;"> 
-                 <div style="font-weight: bold; color: #444;">WhatsApp</div> 
-                 <div style="color: #2e7d32; font-weight: 600;">+91 6301237212</div> 
+    <div style="display: flex; justify-content: center; align-items: flex-start; gap: 80px; flex-wrap: wrap; margin-top: 40px;"> 
+         <div style="text-align: center; flex: 0 1 auto; width: 220px;"> 
+             <a href="https://wa.me/916301237212" target="_blank" style="text-decoration: none; color: inherit; display: block;"> 
+                 <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="50" alt="WhatsApp" style="margin-bottom: 12px; display: block; margin-left: auto; margin-right: auto;"> 
+                 <div style="font-weight: bold; color: #444; font-size: 1.1em; margin-bottom: 4px;">WhatsApp</div> 
+                 <div style="color: #2e7d32; font-weight: 600; font-size: 1.1em;">+91 6301237212</div> 
              </a> 
          </div> 
-         <div style="text-align: center;"> 
-             <a href="mailto:quxat.team@gmail.com" style="text-decoration: none; color: inherit;"> 
-                 <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg" width="40" alt="Email" style="margin-bottom: 8px;"> 
-                 <div style="font-weight: bold; color: #444;">Email</div> 
-                 <div style="color: #d93025; font-weight: 600;">quxat.team@gmail.com</div> 
+         <div style="text-align: center; flex: 0 1 auto; width: 220px;"> 
+             <a href="mailto:quxat.team@gmail.com" style="text-decoration: none; color: inherit; display: block;"> 
+                 <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg" width="50" alt="Email" style="margin-bottom: 12px; display: block; margin-left: auto; margin-right: auto;"> 
+                 <div style="font-weight: bold; color: #444; font-size: 1.1em; margin-bottom: 4px;">Email</div> 
+                 <div style="color: #d93025; font-weight: 600; font-size: 1.1em;">quxat.team@gmail.com</div> 
              </a> 
          </div> 
      </div> 
