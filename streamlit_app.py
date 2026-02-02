@@ -562,16 +562,6 @@ Team QuXAT"""
     st.markdown("---")
     st.markdown("© 2025 QuXAT - All Rights Reserved.")
 
-# Title
-if logo_path:
-    col1, col2, col3 = st.columns([1, 1, 1])
-    with col2:
-        st.image(logo_path, use_container_width=True)
-st.title("QuXAT Healthcare Repository")
-st.markdown("<h2 style='text-align: center; color: #2e7d32;'>✅ Free Access for all Healthcare Professionals</h2>", unsafe_allow_html=True)
-st.subheader("Repository for Healthcare Quality & Compliance Documentation")
-st.markdown("<p style='text-align: center;'>Access essential resources for JCI, NABH, NABL, ISO and other Healthcare Accreditation Standards.</p>", unsafe_allow_html=True)
-
 st.markdown(
     """
     <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 15px; margin-bottom: 25px;">
@@ -581,6 +571,16 @@ st.markdown(
     """, 
     unsafe_allow_html=True
 )
+
+# Title
+if logo_path:
+    col1, col2, col3 = st.columns([1, 1, 1])
+    with col2:
+        st.image(logo_path, use_container_width=True)
+st.title("QuXAT Healthcare Repository")
+st.markdown("<h2 style='text-align: center; color: #2e7d32;'>✅ Free Access for all Healthcare Professionals</h2>", unsafe_allow_html=True)
+st.subheader("Repository for Healthcare Quality & Compliance Documentation")
+st.markdown("<p style='text-align: center;'>Access essential resources for JCI, NABH, NABL, ISO and other Healthcare Accreditation Standards.</p>", unsafe_allow_html=True)
 
 # WhatsApp & Email Support Section (Below Hero)
 st.markdown("### 📞 QuXAT Repository Support")
